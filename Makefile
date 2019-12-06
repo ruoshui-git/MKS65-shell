@@ -1,13 +1,13 @@
 # Thie is working now! Most of credits to: http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 # Also referenced:
 # make manual: https://www.gnu.org/software/make/manual/html_node/index.html
-# Ruoshui on 20191105
+# Ruoshui on 20191205
 
 # Email complaints to: rmao10@stuy.edu
 
 
 # space-separated list of source files
-SRCS = main.c # Place all
+SRCS = main.c shell.c utils.c parser.c cmds.c
 
 # name for executable
 EXE = main
@@ -18,8 +18,10 @@ ifeq ($(filter $(DEBUG), false f FALSE F), )
 	DEBUG_FLAG = -ggdb3
 endif
 
+CSTD = gnu11 # not c11
+
 # flags to pass compiler
-CFLAGS = $(DEBUG_FLAG) -std=c11
+CFLAGS = $(DEBUG_FLAG) -std=$(CSTD)
 
 # compiler to use
 CC = gcc
@@ -69,45 +71,5 @@ run:
 autorun: $(EXE)
 	./$(EXE)
 
-# OLD MAKEFILE:
-
-# # compiler to use
-# CC = gcc
-
-# ifeq (, $(shell which gcc))
-# 	CC = clang
-# endif
-
-# # flags to pass compiler
-# CFLAGS = -ggdb3 -std=c11
-
-# # name for executable
-# EXE = main
-
-# # space-separated list of header files
-# HDRS = llist.h songlib.h
-
-# # space-separated list of source files
-# SRCS = main.c llist.c songlib.c
-
-# # automatically generated list of object files
-# OBJS = $(SRCS:.c=.o)
-
-
-# # default target
-# $(EXE): $(OBJS) $(HDRS) Makefile
-# 	$(CC) $(CFLAGS) -o $@ $(OBJS)
-
-# # dependencies
-# $(OBJS): $(HDRS) Makefile
-
-
-# .PHONY: clean run
-
-# # housekeeping
-# clean:
-# 	rm -f core $(EXE) *.o
-# 	rm -rf obj
-
-# run:
-# 	./$(EXE)
+memcheck:
+	valgrind --leak-check=summary ./$(EXE)

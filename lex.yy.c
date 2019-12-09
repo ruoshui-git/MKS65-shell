@@ -378,8 +378,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 20
-#define YY_END_OF_BUFFER 21
+#define YY_NUM_RULES 21
+#define YY_END_OF_BUFFER 22
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -387,12 +387,12 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[38] =
+static yyconst flex_int16_t yy_accept[40] =
     {   0,
-        0,    0,    0,    0,   21,   18,   19,   20,    1,   18,
-       18,   13,   14,   15,   17,   12,    3,    2,   20,   18,
-       15,   14,   16,   12,    0,    4,    5,    9,   10,    6,
-        8,    7,   11,    4,    5,    4,    0
+        0,    0,    0,    0,   22,   18,   19,   20,   21,    1,
+       18,   18,   13,   14,   15,   17,   12,    3,    2,   21,
+       18,   15,   18,   14,   16,   12,    0,    4,    5,    9,
+       10,    6,    8,    7,   11,    4,    5,    4,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
@@ -433,49 +433,51 @@ static yyconst YY_CHAR yy_meta[19] =
         2,    4,    1,    1,    1,    1,    1,    2
     } ;
 
-static yyconst flex_uint16_t yy_base[41] =
+static yyconst flex_uint16_t yy_base[43] =
     {   0,
-        0,    0,   16,   26,   68,    0,   73,   73,   73,   49,
-       12,   73,   73,   48,   73,    0,   73,   73,   38,    0,
-       47,   73,   73,    0,   38,   54,   30,   33,   32,   31,
-       27,   17,   73,   17,   19,   25,   73,   62,   66,   70
+        0,    0,   16,   26,   63,    0,   78,   78,   78,   78,
+       35,   32,   78,   78,   30,   78,    0,   78,   78,   43,
+        0,   26,    0,   78,   78,    0,   33,   59,   28,   31,
+       30,   29,   27,   17,   78,   15,   17,   19,   78,   67,
+       71,   75
     } ;
 
-static yyconst flex_int16_t yy_def[41] =
+static yyconst flex_int16_t yy_def[43] =
     {   0,
-       37,    1,   38,   38,   37,   39,   37,   37,   37,   39,
-       39,   37,   37,   37,   37,   40,   37,   37,   37,   39,
-       37,   37,   37,   40,   37,   37,   26,   37,   37,   37,
-       37,   37,   37,   37,   37,   37,    0,   37,   37,   37
+       39,    1,   40,   40,   39,   41,   39,   39,   39,   39,
+       41,   41,   39,   39,   39,   39,   42,   39,   39,   39,
+       41,   39,   12,   39,   39,   42,   39,   39,   28,   39,
+       39,   39,   39,   39,   39,   39,   39,   39,    0,   39,
+       39,   39
     } ;
 
-static yyconst flex_uint16_t yy_nxt[92] =
+static yyconst flex_uint16_t yy_nxt[97] =
     {   0,
-        6,    7,    8,    8,    9,   10,   11,   11,   12,   13,
-       14,    6,    6,    6,    6,    6,    6,   15,   17,   33,
-       18,   22,   21,   36,   35,   35,   35,   19,   17,   33,
-       18,   35,   35,   33,   33,   33,   35,   19,   25,   25,
-       33,   25,   25,   25,   26,   27,   25,   25,   25,   25,
-       28,   29,   30,   31,   32,   25,   33,   23,   23,   21,
-       34,   35,   16,   16,   16,   16,   20,   37,   37,   20,
-       24,   24,    5,   37,   37,   37,   37,   37,   37,   37,
-       37,   37,   37,   37,   37,   37,   37,   37,   37,   37,
-       37
+        6,    7,    8,    9,   10,   11,   12,   12,   13,   14,
+       15,    6,    6,    6,    6,    6,    6,   16,   18,   35,
+       19,   38,   37,   37,   37,   37,   37,   20,   18,   35,
+       19,   35,   35,   35,   37,   35,   25,   20,   23,   23,
+       25,   24,   22,   27,   27,   22,   27,   27,   27,   28,
+       29,   27,   27,   27,   27,   30,   31,   32,   33,   34,
+       27,   35,   39,   39,   39,   36,   37,   17,   17,   17,
+       17,   21,   39,   39,   21,   26,   26,    5,   39,   39,
+       39,   39,   39,   39,   39,   39,   39,   39,   39,   39,
+       39,   39,   39,   39,   39,   39
 
     } ;
 
-static yyconst flex_int16_t yy_chk[92] =
+static yyconst flex_int16_t yy_chk[97] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    3,   32,
-        3,   11,   11,   34,   34,   35,   35,    3,    4,   31,
-        4,   36,   36,   30,   29,   28,   27,    4,   19,   19,
-       25,   19,   19,   19,   19,   19,   19,   19,   19,   19,
-       19,   19,   19,   19,   19,   19,   26,   21,   14,   10,
-       26,   26,   38,   38,   38,   38,   39,    5,    0,   39,
-       40,   40,   37,   37,   37,   37,   37,   37,   37,   37,
-       37,   37,   37,   37,   37,   37,   37,   37,   37,   37,
-       37
+        1,    1,    1,    1,    1,    1,    1,    1,    3,   34,
+        3,   36,   36,   37,   37,   38,   38,    3,    4,   33,
+        4,   32,   31,   30,   29,   27,   22,    4,   12,   12,
+       15,   12,   12,   20,   20,   11,   20,   20,   20,   20,
+       20,   20,   20,   20,   20,   20,   20,   20,   20,   20,
+       20,   28,    5,    0,    0,   28,   28,   40,   40,   40,
+       40,   41,    0,    0,   41,   42,   42,   39,   39,   39,
+       39,   39,   39,   39,   39,   39,   39,   39,   39,   39,
+       39,   39,   39,   39,   39,   39
 
     } ;
 
@@ -498,11 +500,13 @@ char *yytext;
 #line 4 "bashin.l"
 #define MAX_STR_CONST 1024
 
+#include "parser.h"
+
 void yyerror(char * msg);
 
 char str_buf[MAX_STR_CONST];
 char * str_buf_ptr;
-#line 506 "lex.yy.c"
+#line 510 "lex.yy.c"
 
 #define INITIAL 0
 #define STR 1
@@ -721,11 +725,11 @@ YY_DECL
 		}
 
 	{
-#line 13 "bashin.l"
+#line 15 "bashin.l"
 
 
 
-#line 729 "lex.yy.c"
+#line 733 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -752,13 +756,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 38 )
+				if ( yy_current_state >= 40 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 73 );
+		while ( yy_base[yy_current_state] != 78 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -784,25 +788,26 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 16 "bashin.l"
+#line 18 "bashin.l"
 { str_buf_ptr = str_buf; BEGIN(STR); }
 	YY_BREAK
 
 
 case 2:
 YY_RULE_SETUP
-#line 20 "bashin.l"
+#line 22 "bashin.l"
 {
         BEGIN(INITIAL);
         *str_buf_ptr = '\0';
         fprintf(yyout, " \"%s\" ", str_buf);
         /* return val to parser here!!!!! */
+        return WORD;
     }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 27 "bashin.l"
+#line 30 "bashin.l"
 {
         *str_buf_ptr++ = '\n';
         fputs("> ", yyout);
@@ -810,7 +815,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 32 "bashin.l"
+#line 35 "bashin.l"
 {
         /* octal escape sequence */
         int result;
@@ -824,45 +829,45 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 43 "bashin.l"
+#line 46 "bashin.l"
 {
         yyerror("bad escape sequence");
     }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 47 "bashin.l"
+#line 50 "bashin.l"
 { *str_buf_ptr++ = '\n'; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 48 "bashin.l"
+#line 51 "bashin.l"
 { *str_buf_ptr++ = '\t'; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 49 "bashin.l"
+#line 52 "bashin.l"
 { *str_buf_ptr++ = '\r'; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 50 "bashin.l"
+#line 53 "bashin.l"
 { *str_buf_ptr++ = '\b'; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 51 "bashin.l"
+#line 54 "bashin.l"
 { *str_buf_ptr++ = '\f'; }
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 53 "bashin.l"
+#line 56 "bashin.l"
 { *str_buf_ptr++ = yytext[1]; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 55 "bashin.l"
+#line 58 "bashin.l"
 {
         char * yptr = yytext;
         while ( * yptr )
@@ -874,45 +879,54 @@ YY_RULE_SETUP
 
 case 13:
 YY_RULE_SETUP
-#line 64 "bashin.l"
-{ puts(""); }
+#line 67 "bashin.l"
+{
+        puts("");
+        return EOL;
+    }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 65 "bashin.l"
-{ fprintf(yyout, " <direct left> "); }
+#line 71 "bashin.l"
+{ fprintf(yyout, " <redirect read> "); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 66 "bashin.l"
-{ fprintf(yyout, " <overwrite: %s> ", yytext); }
+#line 72 "bashin.l"
+{ fprintf(yyout, " <redirect ovewrite: %s> ", yytext); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 67 "bashin.l"
-{ fprintf(yyout, " <append: %s> ", yytext); }
+#line 73 "bashin.l"
+{ fprintf(yyout, " <redirect append: %s> ", yytext); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 68 "bashin.l"
+#line 74 "bashin.l"
 { fputs(" <pipe> ", yyout); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 70 "bashin.l"
+#line 76 "bashin.l"
 { printf(" \"%s\" ", yytext); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 73 "bashin.l"
+#line 78 "bashin.l"
 { }
 	YY_BREAK
 case 20:
+/* rule 20 can match eol */
 YY_RULE_SETUP
-#line 74 "bashin.l"
+#line 80 "bashin.l"
+{ yyterminate(); }
+	YY_BREAK
+case 21:
+YY_RULE_SETUP
+#line 82 "bashin.l"
 ECHO;
 	YY_BREAK
-#line 916 "lex.yy.c"
+#line 930 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STR):
 	yyterminate();
@@ -1206,7 +1220,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 38 )
+			if ( yy_current_state >= 40 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1234,11 +1248,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 38 )
+		if ( yy_current_state >= 40 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 37);
+	yy_is_jam = (yy_current_state == 39);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1914,7 +1928,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 74 "bashin.l"
+#line 82 "bashin.l"
 
 
 

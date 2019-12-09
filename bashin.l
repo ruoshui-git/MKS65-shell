@@ -3,6 +3,8 @@
 %{
 #define MAX_STR_CONST 1024
 
+#include "parser.h"
+
 void yyerror(char * msg);
 
 char str_buf[MAX_STR_CONST];
@@ -22,6 +24,7 @@ char * str_buf_ptr;
         *str_buf_ptr = '\0';
         fprintf(yyout, " \"%s\" ", str_buf);
         /* return val to parser here!!!!! */
+        return WORD;
     }
 
     \n {
@@ -61,16 +64,21 @@ char * str_buf_ptr;
     }
 }
 
-; { puts(""); }
-[0-9]?"<" { fprintf(yyout, " <direct left> "); }
-([0-9]|&)?">" { fprintf(yyout, " <overwrite: %s> ", yytext); }
-([0-9]|&)?">>" { fprintf(yyout, " <append: %s> ", yytext); }
+;   {
+        puts("");
+        return EOL;
+    }
+([0-9]+)?"<" { fprintf(yyout, " <redirect read> "); }
+([0-9]+|&)?">" { fprintf(yyout, " <redirect ovewrite: %s> ", yytext); }
+([0-9]+|&)?">>" { fprintf(yyout, " <redirect append: %s> ", yytext); }
 "|" { fputs(" <pipe> ", yyout); }
 
 [^ \t\n\f\r\v;\"<>|]+ { printf(" \"%s\" ", yytext); }
 
-
 [ \t] { }
+
+\n { yyterminate(); }
+
 %%
 
 void parse(void)

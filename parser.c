@@ -1,6 +1,10 @@
 #include <stdlib.h>
 
 #include "parser.h"
+#include "ast.h"
+
+extern char * yytext;
+extern char * str_buf;
 
 char **parse_args(char *line)
 {
@@ -20,4 +24,41 @@ char **parse_args(char *line)
     }
     args[i] = 0;
     return args;
+}
+
+struct CmdList * readCmd()
+{
+    enum TOKENS token;
+    struct CmdList * cl = NULL;
+    struct Cmd * cmd = NULL;
+    struct WordList * wl = NULL;
+    struct WordElem * we = NULL;
+
+    while((token = yylex()))
+    {
+        switch (token)
+        {
+            case WORD:
+                wl = wl_append(wl, make_word(yytext));
+            break;
+
+            case QUOTED_WORD:
+                wl = wl_append(wl, make_word(str_buf));
+            break;
+
+            case RDRT_READ:
+            break;
+            case RDRT_WRITE:
+            break;
+            case RDRT_APPEND:
+            break;
+            case PIPE:
+            break;
+
+            case EOL:
+
+            break;
+            
+        }
+    }
 }

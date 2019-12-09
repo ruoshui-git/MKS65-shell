@@ -1,34 +1,13 @@
 char **parse_args(char *line);
 
-struct WordElem
-{
-    char * word;
-    struct WordElem * next;
-};
 
-struct WordList
-{
-    struct WordElem * head;
-    int len;
-};
 
-struct Cmd
-{
-    struct WordList * cmd;
-    int cin;
-    int cout;
-    int cerr;
+enum TOKENS {
+    WORD = 260,
+    QUOTED_WORD = 261,
+    RDRT_READ = 262,
+    RDRT_WRITE = 263,
+    RDRT_APPEND = 264,
+    PIPE = 265,
+    EOL = 266
 };
-
-struct CmdElem
-{
-    struct Cmd * cmd;
-    struct CmdElem * next;
-};
-
-struct CmdList
-{
-    struct CmdElem * head;
-    int len;
-};
-

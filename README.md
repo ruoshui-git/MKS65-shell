@@ -21,3 +21,8 @@ Feature testing:
 #### ruoshui@Known:~/code/systems/p1_shell/test$ wc < ls < calc.l < bashin.l 
 ####   84  217 1508
 
+2. bash:
+  - redirection modifies the previous program's I/O behavior
+  - < means replace stdin
+  - > means write, default: 1 (stdout)
+  - >> = append, default: 1 (stdout)

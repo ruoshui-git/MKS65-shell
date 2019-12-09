@@ -25,6 +25,11 @@ int shell()
 {
     ln = malloc(MAX_LN_LEN * sizeof(char));
 
+    if (!ln)
+    {
+        perror("shell");
+    }
+
     while (RUNNING)
     {
         prompt();

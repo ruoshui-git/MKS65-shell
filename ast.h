@@ -18,15 +18,23 @@ struct WordList
     int len;
 };
 
+struct Redirect
+{
+    int type;
+    int src_fileno;
+    char * filename;
+    struct Redirect * next;
+}
+
 /**
  * A command, which has its own in, out, and error sudofiles
+ *
  */
 struct Cmd
 {
     struct WordList * cmd;
-    int cin;
-    int cout;
-    int cerr;
+    struct Redirect * redirects;
+    struct Cmd * pipeto;
 };
 
 /**

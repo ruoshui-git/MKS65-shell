@@ -1,5 +1,5 @@
 char **parse_args(char *line);
-
+void pserror(char * msg);
 
 
 enum TOKENS {
@@ -9,5 +9,5 @@ enum TOKENS {
     RDRT_WRITE = 263,
     RDRT_APPEND = 264,
     PIPE = 265,
-    EOL = 266
+    SEMICOLON = 266
 };

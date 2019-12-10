@@ -20,6 +20,8 @@ static void sighandler(int signum)
 {
     if (signum == SIGINT)
     {
+        printf("\n");
+        prompt();
         return;
     }
     else if (signum == SIGSEGV)
@@ -35,4 +37,3 @@ int main(void)
     signal(SIGSEGV, sighandler);
     return shell();
 }
-

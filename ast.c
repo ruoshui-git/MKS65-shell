@@ -34,3 +34,9 @@ struct WordElem * make_word(char * str)
     we->next = we->prev = NULL;
     return we;
 }
+
+struct Cmd * make_cmd(struct WordList * wl)
+{
+    struct Cmd * cmd = malloc(sizeof(struct Cmd));
+    cmd->cmd = wl;
+}

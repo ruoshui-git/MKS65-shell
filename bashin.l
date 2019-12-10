@@ -52,7 +52,7 @@ char * str_buf_ptr;
     \\r  { *str_buf_ptr++ = '\r'; }
     \\b  { *str_buf_ptr++ = '\b'; }
     \\f  { *str_buf_ptr++ = '\f'; }
-    
+
     \\(.\n) { *str_buf_ptr++ = yytext[1]; }
 
     [^\\\n\"]+ {
@@ -66,7 +66,7 @@ char * str_buf_ptr;
 
 ;   {
         puts("");
-        return EOL;
+        return SEMICOLON;
     }
 ([0-9]+)?"<" { fprintf(yyout, " <redirect read> "); }
 ([0-9]+|&)?">" { fprintf(yyout, " <redirect ovewrite: %s> ", yytext); }

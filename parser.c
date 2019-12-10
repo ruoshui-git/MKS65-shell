@@ -6,6 +6,13 @@
 extern char * yytext;
 extern char * str_buf;
 
+
+struct Cmd * cmd = NULL;
+struct WordList * wl = NULL;
+struct WordElem * we = NULL;
+
+
+
 char **parse_args(char *line)
 {
     // num of separators == num of args; + 1 to take into acount the newline
@@ -26,13 +33,9 @@ char **parse_args(char *line)
     return args;
 }
 
-struct CmdList * readCmd()
+struct Cmd * readCmd()
 {
     enum TOKENS token;
-    struct CmdList * cl = NULL;
-    struct Cmd * cmd = NULL;
-    struct WordList * wl = NULL;
-    struct WordElem * we = NULL;
 
     while((token = yylex()))
     {
@@ -47,6 +50,10 @@ struct CmdList * readCmd()
             break;
 
             case RDRT_READ:
+                if (cmd)
+                {
+                    cmd = cmd_append_redirect();
+                }
             break;
             case RDRT_WRITE:
             break;
@@ -55,10 +62,24 @@ struct CmdList * readCmd()
             case PIPE:
             break;
 
-            case EOL:
-
+            case SEMICOLON:
+                if (cmd)
+                {
+                    wl = we = NULL;
+                    return cmd;
+                }
+                else if (wl)
+                {
+                    struct Cmd * cmd = make_cmd(wl);
+                    wl = we = NULL;
+                    return cmd;
+                }
             break;
-            
         }
     }
+}
+
+void pserror(char * msg)
+{
+    fprintf(stderr, "Parser error: %s\n", msg);
 }

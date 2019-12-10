@@ -15,6 +15,7 @@
 
 extern const int MAX_LN_LEN;
 // extern volatile sig_atomic_t RUNNING;
+int restart_lexer = 0;
 
 /** Keep track of arguments */
 char **argv;
@@ -39,6 +40,12 @@ int shell()
         prompt();
         // fgets(ln, MAX_LN_LEN, stdin);
 
+        if (restart_lexer)
+        {
+            yyrestart(stdin);
+            restart_lexer = 0;
+        }
+
         option = readCmd();
 
         // if (strlen(ln) == 1)
@@ -54,8 +61,13 @@ int shell()
 
         if (option.status == 0)
         {
-            yyrestart(stdin);
-            continue;
+            restart_lexer = 1;
+            if (!(option.cmd))
+            {
+                continue;
+            }
+            argv = cmd_to_argv(option.cmd);
+            
         }
         else if (option.status == EOF)
         {

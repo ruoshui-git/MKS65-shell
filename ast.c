@@ -11,7 +11,8 @@ struct WordList *wl_append(struct WordList *wl, struct WordElem *e)
     {
         wl = calloc(sizeof(struct WordList), 1);
     }
-    else if (!wl->head)
+    
+    if (!wl->head)
     {
         wl->head = e;
         wl->end = e;
@@ -32,7 +33,8 @@ struct WordElem *make_word(char *str)
     struct WordElem *we = malloc(sizeof(struct WordElem));
     we->word = malloc(strlen(str)); // or replace with strdup, should be the same thing
     strcpy(we->word, str);
-    we->next = we->prev = NULL;
+    we->next = NULL;
+    we->prev = NULL;
     return we;
 }
 

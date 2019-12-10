@@ -24,7 +24,7 @@ char * str_buf_ptr;
         *str_buf_ptr = '\0';
         fprintf(yyout, " \"%s\" ", str_buf);
         /* return val to parser here!!!!! */
-        return WORD;
+        return QUOTED_WORD;
     }
 
     \n {
@@ -68,29 +68,30 @@ char * str_buf_ptr;
         puts("");
         return SEMICOLON;
     }
-([0-9]+)?"<" { fprintf(yyout, " <redirect read> "); }
-([0-9]+|&)?">" { fprintf(yyout, " <redirect ovewrite: %s> ", yytext); }
-([0-9]+|&)?">>" { fprintf(yyout, " <redirect append: %s> ", yytext); }
-"|" { fputs(" <pipe> ", yyout); }
+([0-9]+)?"<" { fprintf(yyout, " <redirect read> "); return RDRT_READ; }
+([0-9]+|&)?">" { fprintf(yyout, " <redirect ovewrite: %s> ", yytext); return RDRT_WRITE; }
+([0-9]+|&)?">>" { fprintf(yyout, " <redirect append: %s> ", yytext); return RDRT_APPEND; }
+"|" { fputs(" <pipe> ", yyout); return PIPE; }
 
-[^ \t\n\f\r\v;\"<>|]+ { printf(" \"%s\" ", yytext); }
+[^ \t\n\f\r\v;\"<>|]+ { printf(" \"%s\" ", yytext); return WORD; }
 
 [ \t] { }
 
 \n { yyterminate(); }
 
+
 %%
 
-void parse(void)
-{
-    yylex();
-}
+// void parse(void)
+// {
+//     yylex();
+// }
 
-int main(void)
-{
-    parse();
-    return 0;
-}
+// int main(void)
+// {
+//     parse();
+//     return 0;
+// }
 
 void yyerror(char * msg)
 {

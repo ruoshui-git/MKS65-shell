@@ -1,5 +1,6 @@
+#line 2 "lexer.c"
 
-#line 3 "lex.yy.c"
+#line 4 "lexer.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -495,9 +496,9 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "bashin.l"
+#line 1 "lexer.l"
 
-#line 4 "bashin.l"
+#line 4 "lexer.l"
 #define MAX_STR_CONST 1024
 
 #include "parser.h"
@@ -506,7 +507,7 @@ void yyerror(char * msg);
 
 char str_buf[MAX_STR_CONST];
 char * str_buf_ptr;
-#line 510 "lex.yy.c"
+#line 511 "lexer.c"
 
 #define INITIAL 0
 #define STR 1
@@ -725,11 +726,11 @@ YY_DECL
 		}
 
 	{
-#line 15 "bashin.l"
+#line 15 "lexer.l"
 
 
 
-#line 733 "lex.yy.c"
+#line 734 "lexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -788,26 +789,26 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "bashin.l"
+#line 18 "lexer.l"
 { str_buf_ptr = str_buf; BEGIN(STR); }
 	YY_BREAK
 
 
 case 2:
 YY_RULE_SETUP
-#line 22 "bashin.l"
+#line 22 "lexer.l"
 {
         BEGIN(INITIAL);
         *str_buf_ptr = '\0';
         fprintf(yyout, " \"%s\" ", str_buf);
         /* return val to parser here!!!!! */
-        return WORD;
+        return QUOTED_WORD;
     }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 30 "bashin.l"
+#line 30 "lexer.l"
 {
         *str_buf_ptr++ = '\n';
         fputs("> ", yyout);
@@ -815,7 +816,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 35 "bashin.l"
+#line 35 "lexer.l"
 {
         /* octal escape sequence */
         int result;
@@ -829,45 +830,45 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 46 "bashin.l"
+#line 46 "lexer.l"
 {
         yyerror("bad escape sequence");
     }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 50 "bashin.l"
+#line 50 "lexer.l"
 { *str_buf_ptr++ = '\n'; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 51 "bashin.l"
+#line 51 "lexer.l"
 { *str_buf_ptr++ = '\t'; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 52 "bashin.l"
+#line 52 "lexer.l"
 { *str_buf_ptr++ = '\r'; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 53 "bashin.l"
+#line 53 "lexer.l"
 { *str_buf_ptr++ = '\b'; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 54 "bashin.l"
+#line 54 "lexer.l"
 { *str_buf_ptr++ = '\f'; }
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 56 "bashin.l"
+#line 56 "lexer.l"
 { *str_buf_ptr++ = yytext[1]; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 58 "bashin.l"
+#line 58 "lexer.l"
 {
         char * yptr = yytext;
         while ( * yptr )
@@ -879,54 +880,54 @@ YY_RULE_SETUP
 
 case 13:
 YY_RULE_SETUP
-#line 67 "bashin.l"
+#line 67 "lexer.l"
 {
         puts("");
-        return EOL;
+        return SEMICOLON;
     }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 71 "bashin.l"
-{ fprintf(yyout, " <redirect read> "); }
+#line 71 "lexer.l"
+{ fprintf(yyout, " <redirect read> "); return RDRT_READ; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 72 "bashin.l"
-{ fprintf(yyout, " <redirect ovewrite: %s> ", yytext); }
+#line 72 "lexer.l"
+{ fprintf(yyout, " <redirect ovewrite: %s> ", yytext); return RDRT_WRITE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 73 "bashin.l"
-{ fprintf(yyout, " <redirect append: %s> ", yytext); }
+#line 73 "lexer.l"
+{ fprintf(yyout, " <redirect append: %s> ", yytext); return RDRT_APPEND; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 74 "bashin.l"
-{ fputs(" <pipe> ", yyout); }
+#line 74 "lexer.l"
+{ fputs(" <pipe> ", yyout); return PIPE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 76 "bashin.l"
-{ printf(" \"%s\" ", yytext); }
+#line 76 "lexer.l"
+{ printf(" \"%s\" ", yytext); return WORD; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 78 "bashin.l"
+#line 78 "lexer.l"
 { }
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 80 "bashin.l"
+#line 80 "lexer.l"
 { yyterminate(); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 82 "bashin.l"
+#line 83 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 930 "lex.yy.c"
+#line 931 "lexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STR):
 	yyterminate();
@@ -1928,22 +1929,23 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 82 "bashin.l"
+#line 83 "lexer.l"
 
 
 
-void parse(void)
-{
-    yylex();
-}
+// void parse(void)
+// {
+//     yylex();
+// }
 
-int main(void)
-{
-    parse();
-    return 0;
-}
+// int main(void)
+// {
+//     parse();
+//     return 0;
+// }
 
 void yyerror(char * msg)
 {
     printf("Scanner error: %s\n", msg);
 }
+

@@ -7,7 +7,7 @@
 
 
 # space-separated list of source files
-SRCS = main.c shell.c utils.c parser.c cmds.c
+SRCS = main.c shell.c utils.c parser.c cmds.c lexer.c ast.c
 
 # name for executable
 EXE = main
@@ -26,10 +26,7 @@ CFLAGS = $(DEBUG_FLAG) -std=$(CSTD)
 # compiler to use
 CC = gcc
 
-# Ruoshui: my computer doesn't have gcc; so this will change CC to clang if "which gcc" outputs nothing
-ifeq (, $(shell which gcc))
-	CC = clang
-endif
+LEXFILE = lexer
 
 OBJDIR := obj
 
@@ -57,6 +54,8 @@ $(DEPFILES):
 
 include $(wildcard $(DEPFILES))
 
+lexer: $(LEXFILE).l
+	flex --header-file=$(LEXFILE).h -o $(LEXFILE).c $(LEXFILE).l
 
 .PHONY: clean run autorun
 

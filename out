@@ -1,0 +1,8 @@
+ast.h
+bashin.l
+cmds.h
+colors.h
+parser.h
+shell.c
+shell.h
+utils.h

@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "cmds.h"
+#include "utils.h"
 
 void cd(const char * path)
 {
@@ -21,4 +23,12 @@ void cd(const char * path)
         perror("cd");
         printf("address: %s\n", path);
     }
+}
+
+void shell_exit(void)
+{
+    
+    puts("exit");
+    cleanup();
+    exit(EXIT_SUCCESS);
 }

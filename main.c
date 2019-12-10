@@ -7,11 +7,13 @@
 #include "shell.h"
 #include "utils.h"
 
+/** Input stream */
+extern FILE *yyin;
 
 /** max command length */
 const int MAX_LN_LEN = 1000;
 
-volatile sig_atomic_t RUNNING = 1;
+// volatile sig_atomic_t RUNNING = 1;
 
 /**
  * Handle all the signals
@@ -35,5 +37,9 @@ int main(void)
 {
     signal(SIGINT, sighandler);
     signal(SIGSEGV, sighandler);
+    
+    // default mode, read from stdin
+    yyin = stdin;
+
     return shell();
 }

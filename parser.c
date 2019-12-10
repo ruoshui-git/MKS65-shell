@@ -1,11 +1,15 @@
 #include <stdlib.h>
+#include <string.h>
 
-#include "parser.h"
 #include "ast.h"
+#include "parser.h"
+#include "utils.h"
 
 extern char * yytext;
 extern char * str_buf;
+#include "lexer.h"
 
+extern char *strdup(const char *s);
 
 struct Cmd * cmd = NULL;
 struct WordList * wl = NULL;
@@ -33,9 +37,11 @@ char **parse_args(char *line)
     return args;
 }
 
-struct Cmd * readCmd()
+struct CmdOption readCmd()
 {
     enum TOKENS token;
+    
+    struct CmdOption option;
 
     while((token = yylex()))
     {
@@ -50,9 +56,34 @@ struct Cmd * readCmd()
             break;
 
             case RDRT_READ:
+
+                if (strlen(yytext) != 1)
+                {
+                    serror("does not accept descriptor for input redirect, defaulting to stdin");
+                }
+                token = yylex();
+                char * file;
+                if (token == WORD || token == QUOTED_WORD)
+                {
+                    file = yytext;
+                }
+                else
+                {
+                    pserror("expects a file after redirect");
+                    option.status = 2;
+                    // skip the section affected by error
+                    skip_to_end();
+                    // return option;
+                }
                 if (cmd)
                 {
-                    cmd = cmd_append_redirect();
+                    cmd = cmd_append_redirect(cmd, 0, 0, file);
+                }
+                else if (wl)
+                {
+                    cmd = cmd_append_redirect(make_cmd(wl), 0, 0, file);
+                    wl = NULL;
+                    we = NULL;
                 }
             break;
             case RDRT_WRITE:
@@ -65,21 +96,43 @@ struct Cmd * readCmd()
             case SEMICOLON:
                 if (cmd)
                 {
-                    wl = we = NULL;
-                    return cmd;
+                    wl = NULL;
+                    we = NULL;
+                    option.cmd = cmd;
+                    option.status = 1;
+                    return option;
                 }
                 else if (wl)
                 {
                     struct Cmd * cmd = make_cmd(wl);
-                    wl = we = NULL;
-                    return cmd;
+                    wl = NULL;
+                    we = NULL;
+                    option.cmd = cmd;
+                    option.status = 1;
+                    return option;
+                }
+                else
+                {
+                    pserror("expects a command");
+                    option.status = -1;
+                    return option;
                 }
             break;
+            default:
+                pserror("unrecognized token");
+                // don't stop, continue parsing!
+                // option.status = 2;
+                // return option;
         }
+
+        // yylex() returned 0, reached end of line, terminate
+        option.status = 0;
+        return option;
     }
 }
 
-void pserror(char * msg)
+void skip_to_end(void)
 {
-    fprintf(stderr, "Parser error: %s\n", msg);
+    enum TOKENS token;
+    while ((token = yylex()) != SEMICOLON || token != END) {}
 }

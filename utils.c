@@ -39,3 +39,18 @@ void prompt()
     printf(BOLD_BLUE UNDERLINE"%s"RESET"# ", cwd);
     // fputs("Prompt # ", stdout);
 }
+
+void serror(char * msg)
+{
+    fprintf(stderr, "Shell error: %s\n", msg);
+}
+
+void pserror(char * msg)
+{
+    fprintf(stderr, "Parser error: %s\n", msg);
+}
+
+void iserror(char * msg)
+{
+    fprintf(stderr, "Internal shell error: %s\n", msg);
+}

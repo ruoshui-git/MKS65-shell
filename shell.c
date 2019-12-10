@@ -7,50 +7,67 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "utils.h"
-#include "cmds.h"
 #include "parser.h"
 #include "shell.h"
+#include "utils.h"
+#include "lexer.h"
+#include "cmds.h"
 
 extern const int MAX_LN_LEN;
-extern volatile sig_atomic_t RUNNING;
+// extern volatile sig_atomic_t RUNNING;
 
 /** Keep track of arguments */
-char ** argv;
+char **argv;
 
 /** Keep track of current line of input */
-char * ln;
+char *ln;
 
 int shell()
 {
     ln = malloc(MAX_LN_LEN * sizeof(char));
+
+    struct CmdOption option;
+    struct Cmd * cmd = NULL;
 
     if (!ln)
     {
         perror("shell");
     }
 
-    while (RUNNING)
+    while (1)
     {
         prompt();
-        fgets(ln, MAX_LN_LEN, stdin);
+        // fgets(ln, MAX_LN_LEN, stdin);
 
-        if (strlen(ln) == 1)
+        option = readCmd();
+
+        // if (strlen(ln) == 1)
+        // {
+        //     // nothing is put in, skip
+        //     continue;
+        // }
+
+        // // get rid of newline
+        // ln[strlen(ln) - 1] = 0;
+
+        // argv = parse_args(ln);
+
+        if (option.status == 0)
         {
-            // nothing is put in, skip
+            yyrestart(stdin);
             continue;
         }
-
-        // get rid of newline
-        ln[strlen(ln) - 1] = 0;
-
-        argv = parse_args(ln);
-
-        if ('\04' == argv[0][0] || strcmp(argv[0], "exit") == 0)
+        else if (option.status == EOF)
         {
-            puts("exit");
-            cleanup();
-            return EXIT_SUCCESS;
+            shell_exit();
+        }
+        else if (option.status == 1)
+        {
+            argv = cmd_to_argv(option.cmd);
+        } 
+        if (strcmp(argv[0], "exit") == 0)
+        {
+            shell_exit();
         }
         else if (strcmp(argv[0], "cd") == 0)
         {

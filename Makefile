@@ -27,6 +27,8 @@ CFLAGS = $(DEBUG_FLAG) -std=$(CSTD)
 CC = gcc
 
 LEXFILE = lexer
+LEX = flex
+LFLAGS = --header-file=lexer.h
 
 OBJDIR := obj
 
@@ -54,7 +56,7 @@ $(DEPFILES):
 
 include $(wildcard $(DEPFILES))
 
-lexer: $(LEXFILE).l
+lexer: $(LEXFILE).c
 	flex --header-file=$(LEXFILE).h -o $(LEXFILE).c $(LEXFILE).l
 
 .PHONY: clean run autorun
@@ -63,6 +65,9 @@ lexer: $(LEXFILE).l
 clean:
 	rm -f $(EXE)
 	rm -rf obj
+
+deepclean: clean
+	rm -f lexer.c lexer.h
 
 run:
 	./$(EXE)

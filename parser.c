@@ -78,12 +78,12 @@ struct CmdOption readCmd()
             if (cmd)
             {
                 cmd = cmd_append_redirect(cmd, 0, 0, file);
+                wl = NULL;
             }
             else if (wl)
             {
                 cmd = cmd_append_redirect(make_cmd(wl), 0, 0, file);
                 wl = NULL;
-                we = NULL;
             }
             break;
         case RDRT_WRITE:
@@ -97,17 +97,14 @@ struct CmdOption readCmd()
             if (cmd)
             {
                 wl = NULL;
-                we = NULL;
                 option.cmd = cmd;
                 option.status = 1;
                 return option;
             }
             else if (wl)
             {
-                struct Cmd *cmd = make_cmd(wl);
+                option.cmd = cmd = make_cmd(wl);
                 wl = NULL;
-                we = NULL;
-                option.cmd = cmd;
                 option.status = 1;
                 return option;
             }
@@ -130,7 +127,12 @@ struct CmdOption readCmd()
     option.status = 0;
     if (!cmd && wl)
     {
-        option.cmd = make_cmd(wl);
+        option.cmd = cmd = make_cmd(wl);
+        wl = NULL;
+    }
+    else
+    {
+        option.cmd = NULL;
     }
     return option;
 }
@@ -141,4 +143,10 @@ void skip_to_end(void)
     while ((token = yylex()) != SEMICOLON || token != END)
     {
     }
+}
+
+void restart_lexer(FILE * infile)
+{
+    clear_cmd(cmd);
+    yyrestart(infile);
 }

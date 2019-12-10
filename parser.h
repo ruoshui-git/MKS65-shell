@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "ast.h"
 
 /**
@@ -29,3 +30,6 @@ void skip_to_end(void);
 
 /** Old: parse arguments, return argv */
 char **parse_args(char *line);
+
+/** Restart lexer on a file pointer */
+void restart_lexer(FILE * infile);

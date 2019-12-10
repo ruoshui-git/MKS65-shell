@@ -15,7 +15,7 @@
 
 extern const int MAX_LN_LEN;
 // extern volatile sig_atomic_t RUNNING;
-int restart_lexer = 0;
+int should_restart_lexer = 0;
 
 /** Keep track of arguments */
 char **argv;
@@ -40,10 +40,10 @@ int shell()
         prompt();
         // fgets(ln, MAX_LN_LEN, stdin);
 
-        if (restart_lexer)
+        if (should_restart_lexer)
         {
-            yyrestart(stdin);
-            restart_lexer = 0;
+            restart_lexer(stdin);
+            should_restart_lexer = 0;
         }
 
         option = readCmd();
@@ -61,13 +61,13 @@ int shell()
 
         if (option.status == 0)
         {
-            restart_lexer = 1;
+            should_restart_lexer = 1;
             if (!(option.cmd))
             {
                 continue;
             }
             argv = cmd_to_argv(option.cmd);
-            
+
         }
         else if (option.status == EOF)
         {
@@ -76,7 +76,7 @@ int shell()
         else if (option.status == 1)
         {
             argv = cmd_to_argv(option.cmd);
-        } 
+        }
         if (strcmp(argv[0], "exit") == 0)
         {
             shell_exit();
@@ -127,5 +127,6 @@ int shell()
             return EXIT_FAILURE;
         }
         free(argv);
+        argv = NULL;
     }
 }

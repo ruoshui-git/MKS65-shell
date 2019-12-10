@@ -11,7 +11,7 @@ struct WordList *wl_append(struct WordList *wl, struct WordElem *e)
     {
         wl = calloc(sizeof(struct WordList), 1);
     }
-    
+
     if (!wl->head)
     {
         wl->head = e;
@@ -77,11 +77,73 @@ char ** cmd_to_argv(struct Cmd * cmd)
     struct WordElem * we;
     for (i = 0, we = wl->head; i < len; i++, we = we->next)
     {
-        if (!we) 
+        if (!we)
         {
             iserror("argument conversion error");
         }
         argv[i] = we->word;
     }
     return argv;
+}
+
+struct Cmd * clear_cmd(struct Cmd * cmd)
+{
+    if (!cmd)
+    {
+        return NULL;
+    }
+    cmd->cmd = free_word_list(cmd->cmd);
+    cmd->redirects = free_redirects(cmd->redirects);
+    cmd->pipeto = free_cmd(cmd->pipeto);
+    return cmd;
+}
+
+struct Cmd * free_cmd(struct Cmd * cmd)
+{
+    if (cmd)
+    {
+        cmd = clear_cmd(cmd);
+        free(cmd);
+    }
+    return NULL;
+}
+
+struct WordList * free_word_list(struct WordList * wl)
+{
+    if (wl)
+    {
+        // free the entire list in a loop
+        struct WordElem * cur, * next;
+        cur = wl->head;
+        next = wl->head;
+        while (next = next->next)
+        {
+            free(cur->word);
+            free(cur);
+            cur = next;
+        }
+        free(cur->word);
+        free(cur);
+
+        // free list
+        free(wl);
+    }
+    return NULL;
+}
+
+struct Redirect * free_redirects(struct Redirect * rd)
+{
+    if (rd)
+    {
+        struct Redirect * cur, * next;
+        cur = rd;
+        next = rd;
+        while (next = rd->next)
+        {
+            free(cur);
+            cur = next;
+        }
+        free(cur);
+    }
+    return NULL;
 }

@@ -85,3 +85,8 @@ struct Cmd *cmd_append_redirect(struct Cmd *cmd, int rdrt_type, int src_fileno, 
 
 /** Make a argv for execvp from a struct Cmd */
 char ** cmd_to_argv(struct Cmd * cmd);
+
+struct Cmd * clear_cmd(struct Cmd * cmd);
+struct Cmd * free_cmd(struct Cmd * cmd);
+struct WordList * free_word_list(struct WordList * wl);
+struct Redirect * free_redirects(struct Redirect * rd);

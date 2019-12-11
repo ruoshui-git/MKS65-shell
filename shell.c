@@ -24,9 +24,19 @@ char **argv;
 /** Keep track of current line of input */
 char *ln;
 
+/** Copies of stdio file desc */
+int stdin_copy = 0, stdout_copy = 0, stderr_copy = 0;
+
 int shell()
 {
-    ln = malloc(MAX_LN_LEN * sizeof(char));
+    if (!stdin_copy)
+    {
+        stdin_copy = dup(STDIN_FILENO);
+        stdout_copy = dup(STDOUT_FILENO);
+        stderr_copy = dup(STDERR_FILENO);
+    }
+
+    // ln = malloc(MAX_LN_LEN * sizeof(char));
 
     struct CmdOption option;
     struct Cmd *cmd = NULL;
@@ -84,6 +94,7 @@ int shell()
         }
 
         
+
         if (strcmp(argv[0], "exit") == 0)
         {
             shell_exit();

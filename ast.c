@@ -22,6 +22,7 @@ struct WordList *wl_append(struct WordList *wl, struct WordElem *e)
     {
         wl->end->next = e;
         e->prev = wl->end;
+        wl->end = e;
         wl->len++;
     }
 
@@ -40,8 +41,9 @@ struct WordElem *make_word(char *str)
 
 struct Cmd *make_cmd(struct WordList *wl)
 {
-    struct Cmd *cmd = malloc(sizeof(struct Cmd));
+    struct Cmd *cmd = calloc(sizeof(struct Cmd), 1);
     cmd->cmd = wl;
+    return cmd;
 }
 
 struct Cmd *cmd_append_redirect(struct Cmd *cmd, int rdrt_type, int src_fileno, char *file)
@@ -72,7 +74,7 @@ char ** cmd_to_argv(struct Cmd * cmd)
 {
     struct WordList * wl = cmd->cmd;
     int len = wl->len;
-    char ** argv = malloc(sizeof(char*) * len);
+    char ** argv = malloc(sizeof(char*) * len + 1);
     int i;
     struct WordElem * we;
     for (i = 0, we = wl->head; i < len; i++, we = we->next)
@@ -83,6 +85,7 @@ char ** cmd_to_argv(struct Cmd * cmd)
         }
         argv[i] = we->word;
     }
+    argv[i] = NULL;
     return argv;
 }
 

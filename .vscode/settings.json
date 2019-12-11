@@ -3,6 +3,8 @@
         "stdlib.h": "c",
         "string.h": "c",
         "ast.h": "c",
-        "ast.structs.h": "c"
+        "ast.structs.h": "c",
+        "utils.h": "c",
+        "lexer.h": "c"
     }
 }

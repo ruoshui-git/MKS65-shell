@@ -4,12 +4,18 @@
 #include "ast.h"
 #include "parser.h"
 #include "utils.h"
-
-extern char *yytext;
-extern char *str_buf;
 #include "lexer.h"
 
+#ifndef MAX_STR_CONST
+#define MAX_STR_CONST 1024
+#endif
+
+extern char *yytext;
+extern char str_buf[MAX_STR_CONST];
+
 extern char *strdup(const char *s);
+
+int multiple_commands = 0;
 
 struct Cmd *cmd = NULL;
 struct WordList *wl = NULL;
@@ -94,6 +100,7 @@ struct CmdOption readCmd()
             break;
 
         case SEMICOLON:
+            multiple_commands = 1;
             if (cmd)
             {
                 wl = NULL;
@@ -118,6 +125,7 @@ struct CmdOption readCmd()
         default:
             pserror("unrecognized token");
             // don't stop, continue parsing!
+            skip_to_end();
             // option.status = 2;
             // return option;
         }
@@ -125,13 +133,17 @@ struct CmdOption readCmd()
 
     // yylex() returned 0, reached end of line, terminate
     option.status = 0;
-    if (!cmd && wl)
+
+    // Either this is a new shell command, or there are multiple commands. Then run the current one.
+    // Otherwise there is no command, then return NULL
+    if ((!cmd && wl) || multiple_commands)
     {
         option.cmd = cmd = make_cmd(wl);
         wl = NULL;
     }
     else
     {
+        
         option.cmd = NULL;
     }
     return option;
@@ -140,13 +152,15 @@ struct CmdOption readCmd()
 void skip_to_end(void)
 {
     enum TOKENS token;
-    while ((token = yylex()) != SEMICOLON || token != END)
+    while ((token = yylex()) != SEMICOLON && token != END)
     {
     }
 }
 
 void restart_lexer(FILE * infile)
 {
-    clear_cmd(cmd);
+    free_cmd(cmd);
+    cmd = NULL;
+    multiple_commands = 0;
     yyrestart(infile);
 }

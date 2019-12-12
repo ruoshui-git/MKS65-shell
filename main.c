@@ -6,6 +6,7 @@
 
 #include "shell.h"
 #include "utils.h"
+#include "parser.h"
 
 /** Input stream */
 extern FILE *yyin;
@@ -22,8 +23,9 @@ static void sighandler(int signum)
 {
     if (signum == SIGINT)
     {
-        printf("\n");
-        prompt();
+        // printf("\n");
+        // restart_lexer(stdin);
+        // prompt();
         return;
     }
     else if (signum == SIGSEGV)

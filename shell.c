@@ -11,7 +11,6 @@
 #include "shell.h"
 #include "utils.h"
 #include "lexer.h"
-#include "cmds.h"
 
 extern const int MAX_LN_LEN;
 // extern volatile sig_atomic_t RUNNING;
@@ -24,27 +23,19 @@ char **argv;
 /** Keep track of current line of input */
 char *ln;
 
-/** Copies of stdio file desc */
-int stdin_copy = 0, stdout_copy = 0, stderr_copy = 0;
-
 int shell()
 {
-    if (!stdin_copy)
-    {
-        stdin_copy = dup(STDIN_FILENO);
-        stdout_copy = dup(STDOUT_FILENO);
-        stderr_copy = dup(STDERR_FILENO);
-    }
-
-    // ln = malloc(MAX_LN_LEN * sizeof(char));
+    // ln = malloc(MAX_LN_LEN * sizeof(char));    
+    
+    // if (!ln)
+    // {
+    //     perror("shell");
+    // }
 
     struct CmdOption option;
     struct Cmd *cmd = NULL;
 
-    if (!ln)
-    {
-        perror("shell");
-    }
+
 
     while (1)
     {
@@ -59,6 +50,7 @@ int shell()
             restart_lexer(stdin);
             should_restart_lexer = 0;
         }
+
 
         option = readCmd();
 
@@ -104,6 +96,8 @@ int shell()
             cd(argv[1]);
             continue;
         }
+
+        handle_redirects(option.cmd);
 
         // fork process to run command
         pid_t parent = fork();

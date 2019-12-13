@@ -33,3 +33,7 @@ char **parse_args(char *line);
 
 /** Restart lexer on a file pointer */
 void restart_lexer(FILE * infile);
+
+int get_rd_fileno(char * rd_text);
+
+int lex_rd_file(char ** file_ptr);

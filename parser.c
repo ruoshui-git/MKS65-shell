@@ -51,7 +51,7 @@ struct CmdOption readCmd()
     option.status = 0;
     option.cmd = NULL;
 
-    while ((token = yylex()))
+    while (token = yylex())
     {
         switch (token)
         {
@@ -71,24 +71,14 @@ struct CmdOption readCmd()
             {
                 serror("does not accept descriptor for input redirect, defaulting to stdin");
             }
-            token = yylex();
-            char *file;
-            if (token == WORD)
+
+            char * file;
+            int status = lex_rd_file(&file);
+            if (status == -1)
             {
-                file = yytext;
+                continue;
             }
-            else if (token == QUOTED_WORD)
-            {
-                file = str_buf;
-            }
-            else
-            {
-                pserror("expects a file after redirect");
-                option.status = 2;
-                // skip the section affected by error
-                skip_to_end();
-                // return option;
-            }
+
             if (cmd)
             {
                 cmd = cmd_append_redirect(cmd, 0, 0, file);
@@ -109,15 +99,26 @@ struct CmdOption readCmd()
             int len = strlen(yytext);
             char * rd_text = strdup(yytext);
 
+            char * file;
+            int status = lex_rd_file(&file);
+            if (status = -1)
+            {
+                continue;
+            }
+
             // if there is a descriptor, change to that one
-            if (len == 2 && yytext[0] == '&')
+            if (len == 2 && rd_text[0] == '&')
             {
                 // '&' is the only special char here
-                // change of course, not supporting this as of now
+                // it would get converted to 1>[file] 2>&1
+
             }
-            if (strlen(yytext) > 1)
+
+            if (len > 1)
             {
-                rd_text[strlen(rd_text) - 1] = '\0';
+                // this means "[num]>"
+                int fd = get_rd_fileno(rd_text);
+
 
             }
 
@@ -171,7 +172,7 @@ struct CmdOption readCmd()
     }
     // else
     // {
-        
+
     //     option.cmd = NULL;
     // }
     return option;
@@ -191,4 +192,34 @@ void restart_lexer(FILE * infile)
     cmd = NULL;
     multiple_commands = 0;
     yyrestart(infile);
+}
+
+int get_rd_fileno(char * rd_text)
+{
+    char * text = strdup(rd_text);
+    text[strlen(text) - 1] = '\0';
+    int fd = atoi(text);
+    free(text);
+    return fd;
+}
+
+int lex_rd_file(char ** file_ptr)
+{
+    enum TOKENS token = yylex();
+    if (token == WORD)
+    {
+        *file_prt = yytext;
+    }
+    else if (token == QUOTED_WORD)
+    {
+        *file_prt = str_buf;
+    }
+    else
+    {
+        pserror("expects a file after redirect");
+        // skip the section affected by error
+        skip_to_end();
+        return -1;
+    }
+    return 0;
 }

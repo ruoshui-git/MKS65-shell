@@ -41,7 +41,7 @@ int handle_redirects(struct Redirect * rd)
                 // type == 2
                 flag = O_APPEND;
             }
-            
+
             int fd = open(rd->filename, O_WRONLY | O_CREAT  | __O_CLOEXEC | flag);
             if (fd == -1)
             {
@@ -58,7 +58,7 @@ int handle_redirects(struct Redirect * rd)
             {
                 std_fileno = STDOUT_FILENO;
             }
-            else if (src_fileno == 2)
+            else (src_fileno == 2)
             {
                 std_fileno = STDERR_FILENO;
             }

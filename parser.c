@@ -100,11 +100,30 @@ struct CmdOption readCmd()
                 wl = NULL;
             }
             option.cmd = cmd;
-            
+
             break;
         case RDRT_WRITE:
+            // default action is write to stdout
+            int src_fileno = 1;
+
+            int len = strlen(yytext);
+            char * rd_text = strdup(yytext);
+
+            // if there is a descriptor, change to that one
+            if (len == 2 && yytext[0] == '&')
+            {
+                // '&' is the only special char here
+                // change of course, not supporting this as of now
+            }
+            if (strlen(yytext) > 1)
+            {
+                rd_text[strlen(rd_text) - 1] = '\0';
+
+            }
+
             break;
         case RDRT_APPEND:
+
             break;
         case PIPE:
             break;

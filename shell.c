@@ -133,7 +133,12 @@ int shell()
                 printf("argv[%d]: \"%s\"\n", i, argv[i]);
             }
 
-            handle_redirects(option.cmd->redirects);
+            int rd_result = handle_redirects(option.cmd->redirects);
+
+            if (rd_result == -1)
+            {
+                serror("redirection error");
+            }
 
             int res = execvp(argv[0], argv);
             // if exec succeeded, this shoudn't run

@@ -33,7 +33,8 @@ int handle_redirects(struct Cmd *cmd)
     }
     while (rd)
     {
-        if (rd->type == 0)
+        int type = rd->type;
+        if (type == 0)
         {
             // < redirect
             int fd = open(rd->filename, O_RDONLY);
@@ -42,11 +43,21 @@ int handle_redirects(struct Cmd *cmd)
                 perror("open");
                 return -1;
             }
-            if (!stdin_copy)
-            {
-                stdin_copy = dup(STDIN_FILENO);
-            }
             dup2(STDIN_FILENO, fd);
+        }
+        else if (type == 1)
+        {
+            int fd = open(rd->filename, O_WRONLY);
+            if (fd == -1)
+            {
+                perror("open");
+                return -1;
+            }
+            dup2(STDOUT_FILENO, fd);
+        }
+        else if (type == 2)
+        {
+            int fd = open()
         }
     }
 }
@@ -73,6 +84,7 @@ void reset_redirects(struct Cmd *cmd)
     }
     if (cmd && cmd->redirects)
     {
+        struct Redirects * rd = cmd->redirects;
 
     }
 }

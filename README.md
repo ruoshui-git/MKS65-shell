@@ -62,3 +62,6 @@ utils.h```
 
 3. redirection & | together: > on the first cmd will happen to the first command, > on the second command happens to the whole thing
   - for "<" this shouldn't really matter
+
+- IMPORTANT:
+  - Use the O_CLOEXEC flag in open so closing fds after exec is not needed

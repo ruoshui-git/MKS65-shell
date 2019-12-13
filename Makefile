@@ -7,7 +7,7 @@
 
 
 # space-separated list of source files
-SRCS = main.c shell.c utils.c parser.c cmds.c lexer.c ast.c
+SRCS = main.c shell.c utils.c parser.c cmds.c lexer.c ast.c processes.c
 
 # name for executable
 EXE = main

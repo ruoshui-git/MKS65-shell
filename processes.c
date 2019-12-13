@@ -8,25 +8,9 @@
 #include "cmds.h"
 #include "ast.h"
 
-int stdin_copy = 0;
-int stdout_copy = 0;
-int stderr_copy = 0;
-int stdin_change = 0;
-int stdout_change = 0;
-int stderr_change = 0;
 
-/**
- * Handles redirect by setting system fd to the files
- * @return 0 on success, -1 on sys error, -2 on fn error
- */
-int handle_redirects(struct Cmd *cmd)
+int handle_redirects(struct Redirect * rd)
 {
-    if (!cmd)
-    {
-        return -2;
-    }
-
-    struct Redirect *rd = cmd->redirects;
     if (!rd)
     {
         return -2;
@@ -37,54 +21,55 @@ int handle_redirects(struct Cmd *cmd)
         if (type == 0)
         {
             // < redirect
-            int fd = open(rd->filename, O_RDONLY);
+            int fd = open(rd->filename, O_RDONLY | __O_CLOEXEC);
             if (fd == -1)
             {
                 perror("open");
                 return -1;
             }
-            dup2(STDIN_FILENO, fd);
+            dup2(fd, STDIN_FILENO);
         }
-        else if (type == 1)
+        else
         {
-            int fd = open(rd->filename, O_WRONLY);
+            int flag;
+            if (type == 1)
+            {
+                flag = O_TRUNC;
+            }
+            else
+            {
+                // type == 2
+                flag = O_APPEND;
+            }
+            
+            int fd = open(rd->filename, O_WRONLY | O_CREAT  | __O_CLOEXEC | flag);
             if (fd == -1)
             {
                 perror("open");
                 return -1;
             }
-            dup2(STDOUT_FILENO, fd);
+            int std_fileno;
+            int src_fileno = rd->src_fileno;
+            if (src_fileno == 0)
+            {
+                std_fileno = STDIN_FILENO;
+            }
+            else if (src_fileno == 1)
+            {
+                std_fileno = STDOUT_FILENO;
+            }
+            else if (src_fileno == 2)
+            {
+                std_fileno = STDERR_FILENO;
+            }
+            int d_result = dup2(fd, std_fileno);
+            if (d_result == -1)
+            {
+                perror("dup2");
+                return -1;
+            }
         }
-        else if (type == 2)
-        {
-            int fd = open()
-        }
+        rd = rd->next;
     }
-}
-
-/**
- * Reset redirects and closed the file
- */
-void reset_redirects(struct Cmd *cmd)
-{
-    if (stdin_change)
-    {
-        dup2(STDIN_FILENO, stdin_copy);
-        stdin_change = 0;
-    }
-    if (stdout_change)
-    {
-        dup2(STDOUT_FILENO, stdout_change);
-        stdout_change = 0;
-    }
-    if (stderr_change)
-    {
-        dup2(STDERR_FILENO, stderr_copy);
-        stderr_change = 0;
-    }
-    if (cmd && cmd->redirects)
-    {
-        struct Redirects * rd = cmd->redirects;
-
-    }
+    return 0;
 }

@@ -43,9 +43,13 @@ char **parse_args(char *line)
 
 struct CmdOption readCmd()
 {
+    // keep track of lexer token
     enum TOKENS token;
 
+    // define return option and set default values
     struct CmdOption option;
+    option.status = 0;
+    option.cmd = NULL;
 
     while ((token = yylex()))
     {
@@ -69,9 +73,13 @@ struct CmdOption readCmd()
             }
             token = yylex();
             char *file;
-            if (token == WORD || token == QUOTED_WORD)
+            if (token == WORD)
             {
                 file = yytext;
+            }
+            else if (token == QUOTED_WORD)
+            {
+                file = str_buf;
             }
             else
             {
@@ -91,6 +99,8 @@ struct CmdOption readCmd()
                 cmd = cmd_append_redirect(make_cmd(wl), 0, 0, file);
                 wl = NULL;
             }
+            option.cmd = cmd;
+            
             break;
         case RDRT_WRITE:
             break;
@@ -132,7 +142,6 @@ struct CmdOption readCmd()
     }
 
     // yylex() returned 0, reached end of line, terminate
-    option.status = 0;
 
     // Either this is a new shell command, or there are multiple commands. Then run the current one.
     // Otherwise there is no command, then return NULL
@@ -141,11 +150,11 @@ struct CmdOption readCmd()
         option.cmd = cmd = make_cmd(wl);
         wl = NULL;
     }
-    else
-    {
+    // else
+    // {
         
-        option.cmd = NULL;
-    }
+    //     option.cmd = NULL;
+    // }
     return option;
 }
 

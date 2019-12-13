@@ -7,10 +7,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include "processes.h"
 #include "parser.h"
-#include "shell.h"
 #include "utils.h"
 #include "lexer.h"
+#include "cmds.h"
+
+#include "shell.h"
 
 extern const int MAX_LN_LEN;
 // extern volatile sig_atomic_t RUNNING;
@@ -97,8 +100,6 @@ int shell()
             continue;
         }
 
-        handle_redirects(option.cmd);
-
         // fork process to run command
         pid_t parent = fork();
         if (parent == -1)
@@ -132,12 +133,15 @@ int shell()
                 printf("argv[%d]: \"%s\"\n", i, argv[i]);
             }
 
+            handle_redirects(option.cmd->redirects);
+
             int res = execvp(argv[0], argv);
             // if exec succeeded, this shoudn't run
             perror(argv[0]);
             // puts("child: cmd not found");
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
+
         free(argv);
         argv = NULL;
     }

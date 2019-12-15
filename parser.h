@@ -8,10 +8,11 @@
 struct CmdOption
 {
     int status;
-    struct Cmd * cmd;
+    struct Cmd *cmd;
 };
 
-enum TOKENS {
+enum TOKENS
+{
     WORD = 260,
     QUOTED_WORD = 261,
     RDRT_READ = 262,
@@ -32,8 +33,19 @@ void skip_to_end(void);
 char **parse_args(char *line);
 
 /** Restart lexer on a file pointer */
-void restart_lexer(FILE * infile);
+void restart_lexer(FILE *infile);
 
-int get_rd_fileno(char * rd_text);
+/** 
+ * Get the fileno from a redirect operator
+ * Ex: return 2 on "2>"
+ * @arg rd_text string representing the redirect operation
+ * @return fileno
+ */
+int get_rd_fileno(char *rd_text);
 
-int lex_rd_file(char ** file_ptr);
+/** 
+ * Call yylex() to read in a file. Used for redirects.
+ * @arg file_ptr will point to the file
+ * @return status
+*/
+int lex_rd_file(char **file_ptr);

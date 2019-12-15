@@ -144,6 +144,7 @@ struct Redirect * free_redirects(struct Redirect * rd)
         while (next = rd->next)
         {
             free(cur);
+            free(cur->filename);
             cur = next;
         }
         free(cur);

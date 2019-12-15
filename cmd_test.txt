@@ -1,0 +1,28 @@
+# normal cmd execution
+ls
+ls -al
+ls -a -l -t
+wc main
+echo hello
+echo hello world
+echo let's see how many arguments you can accept
+cd ..
+cd ../../././../
+cd /etc
+exit
+
+# put them in a single line
+ls; ls -al; ls -a -l -t; wc main; echo hello
+echo hello world; echo let's see how many arguments you can accept; cd ..; cd ../../././../; cd /etc; exit
+
+# quotes and spaces
+echo "hello this is all in a quote"
+ls      -a -t                   -r
+
+# support of combination of redirects
+wc < main.c > out.txt
+gcc &> out.txt
+gcc &>> out.txt
+
+echo "hellO" 2> out.txt 1>&2
+

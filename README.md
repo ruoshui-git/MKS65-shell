@@ -65,3 +65,18 @@ utils.h```
 
 - IMPORTANT:
   - Use the O_CLOEXEC flag in open so closing fds after exec is not needed
+
+IMPLEMENTED FEATURES:
+
+- "parse double quotes like this" (no support for ' ')
+- ignore arbitrary spaces
+  - so: 'ls>out'=='ls > out'=='ls >out'=='ls> out'=='ls >    out'
+- redirect > and >> with file descriptor support
+  - like: gcc 2>> out.log
+- 
+
+Usage Notes:
+- no support for "[cmd] [num]< [file]", only "[cmd] < [file]"
+  - i.e. you can only redirect in from stdin
+- no support for "... [num]>>&[num] ...", only "[num]>&[num]", like "2>&1"
+  - i.e. redirecting out to a fd only works for ">", not ">>"

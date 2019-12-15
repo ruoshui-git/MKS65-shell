@@ -53,6 +53,10 @@ struct CmdOption readCmd()
 
     while (token = yylex())
     {
+        char *file;
+        int status;
+        int src_fileno;
+
         switch (token)
         {
         case WORD:
@@ -72,60 +76,94 @@ struct CmdOption readCmd()
                 serror("does not accept descriptor for input redirect, defaulting to stdin");
             }
 
-            char * file;
-            int status = lex_rd_file(&file);
+            // does not allow redeclaration, so reset "file"
+            file = NULL;
+
+            status = lex_rd_file(&file);
             if (status == -1)
             {
                 continue;
             }
 
-            if (cmd)
+            if (!cmd && wl)
             {
-                cmd = cmd_append_redirect(cmd, 0, 0, file);
-                wl = NULL;
+                cmd = make_cmd(wl);
             }
-            else if (wl)
-            {
-                cmd = cmd_append_redirect(make_cmd(wl), 0, 0, file);
-                wl = NULL;
-            }
+            cmd = cmd_append_redirect(cmd, 0, 0, file);
+            wl = NULL;
             option.cmd = cmd;
 
             break;
+
         case RDRT_WRITE:
-            // default action is write to stdout
-            int src_fileno = 1;
+        case RDRT_APPEND: //largely the same
+
+            ; // empty statement to avoid error "a label can only be part of a statement and a declaration is not a statement"
+
+            // default action is redirect stdout
+            src_fileno = 1;
 
             int len = strlen(yytext);
-            char * rd_text = strdup(yytext);
+            char *rd_text = strdup(yytext);
 
-            char * file;
-            int status = lex_rd_file(&file);
-            if (status = -1)
+            // does not allow redeclaration so reset "file"
+            file = NULL;
+            status = lex_rd_file(&file);
+            if (status == -1)
             {
                 continue;
             }
 
-            // if there is a descriptor, change to that one
-            if (len == 2 && rd_text[0] == '&')
+            // deal with descriptors and add redirect to cmd
+            if (rd_text[0] == '&')
             {
+                if (token == RDRT_APPEND)
+                {
+                    serror("shell does not support [num]>>&[num]");
+                    skip_to_end();
+                    continue;
+                }
+
                 // '&' is the only special char here
                 // it would get converted to 1>[file] 2>&1
+                if (!cmd && wl)
+                {
+                    cmd = make_cmd(wl);
+                }
+                wl = NULL;
+                cmd = cmd_append_redirect(cmd, 1, 1, file);
+                cmd = cmd_append_redirect(cmd, 1, 2, strdup("&1"));
 
+                free(rd_text);
+                break;
             }
-
-            if (len > 1)
+            else if ((token == RDRT_WRITE && len > 1) || (token == RDRT_APPEND && len > 2))
             {
                 // this means "[num]>"
-                int fd = get_rd_fileno(rd_text);
+                src_fileno = get_rd_fileno(rd_text);
+            }
+            // else
+            // {
+            //     // ">"
+            //     src_fileno = 1; // 1 == stdout
+            // }
 
+            // no longer needed
+            free(rd_text);
 
+            // append redirect
+            if (!cmd && wl)
+            {
+                cmd = make_cmd(wl);
             }
 
-            break;
-        case RDRT_APPEND:
+            wl = NULL;
+            cmd_append_redirect(cmd, (token == RDRT_WRITE ? 1 : 2), src_fileno, file);
+
+            option.cmd = cmd;
 
             break;
+
         case PIPE:
             break;
 
@@ -164,7 +202,7 @@ struct CmdOption readCmd()
     // yylex() returned 0, reached end of line, terminate
 
     // Either this is a new shell command, or there are multiple commands. Then run the current one.
-    // Otherwise there is no command, then return NULL
+    // Otherwise there is no command, then return NULL, which is the default
     if ((!cmd && wl) || multiple_commands)
     {
         option.cmd = cmd = make_cmd(wl);
@@ -186,33 +224,48 @@ void skip_to_end(void)
     }
 }
 
-void restart_lexer(FILE * infile)
+void restart_lexer(FILE *infile)
 {
-    free_cmd(cmd);
+    if (cmd)
+    {
+        free_cmd(cmd);
+    }
     cmd = NULL;
     multiple_commands = 0;
     yyrestart(infile);
 }
 
-int get_rd_fileno(char * rd_text)
+int get_rd_fileno(char *rd_text)
 {
-    char * text = strdup(rd_text);
-    text[strlen(text) - 1] = '\0';
+    char *text = strdup(rd_text);
+    int len = strlen(text);
+    if (text[len - 2] == '>')
+    {
+        // then it's a "[num]>>"
+        text[len - 2] = '\0';
+    }
+    else
+    {
+        // "[num]>"
+        text[len - 1] = '\0';
+    }
+    
+
     int fd = atoi(text);
     free(text);
     return fd;
 }
 
-int lex_rd_file(char ** file_ptr)
+int lex_rd_file(char **file_ptr)
 {
     enum TOKENS token = yylex();
     if (token == WORD)
     {
-        *file_prt = yytext;
+        *file_ptr = yytext;
     }
     else if (token == QUOTED_WORD)
     {
-        *file_prt = str_buf;
+        *file_ptr = str_buf;
     }
     else
     {

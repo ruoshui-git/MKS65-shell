@@ -87,6 +87,12 @@ int shell()
             argv = cmd_to_argv(option.cmd);
             should_prompt = 0;
         }
+        else if (option.status == -1)
+        {
+            should_restart_lexer = 1;
+            should_prompt = 1;
+            continue;
+        }
 
         
 

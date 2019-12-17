@@ -37,6 +37,7 @@ void prompt()
 {
     getcwd(cwd, PATH_MAX);
     printf(BOLD_BLUE UNDERLINE"%s"RESET"# ", cwd);
+    fflush(stdout);
     // fputs("Prompt # ", stdout);
 }
 

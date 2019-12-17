@@ -140,14 +140,38 @@ struct Redirect * free_redirects(struct Redirect * rd)
     {
         struct Redirect * cur, * next;
         cur = rd;
-        next = rd;
-        while (next = rd->next)
+        next = rd->next;
+        while (1)
         {
             free(cur);
             free(cur->filename);
             cur = next;
+            if (!cur)
+            {
+                break;
+            }
+            next = next->next;
+            
         }
-        free(cur);
     }
     return NULL;
+}
+
+
+struct Cmd * attach_pipe(struct Cmd * cmd, struct Cmd * pipeto)
+{
+    if (!cmd->pipeto)
+    {
+        cmd->pipeto = pipeto;
+    }
+    else
+    {
+        struct Cmd * trav = cmd->pipeto;
+        while (trav->pipeto)
+        {
+            trav = trav->pipeto;
+        }
+        trav->pipeto = pipeto;
+    }
+    return cmd;
 }

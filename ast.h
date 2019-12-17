@@ -90,3 +90,4 @@ struct Cmd * clear_cmd(struct Cmd * cmd);
 struct Cmd * free_cmd(struct Cmd * cmd);
 struct WordList * free_word_list(struct WordList * wl);
 struct Redirect * free_redirects(struct Redirect * rd);
+struct Cmd * attach_pipe(struct Cmd * cmd, struct Cmd * pipeto);

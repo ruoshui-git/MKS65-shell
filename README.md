@@ -69,11 +69,11 @@ utils.h```
 IMPLEMENTED FEATURES:
 
 - "parse double quotes like this" (no support for ' ')
-- ignore arbitrary spaces
+- ignore  arbitrary     spaces
   - so: 'ls>out'=='ls > out'=='ls >out'=='ls> out'=='ls >    out'
 - redirect > and >> with file descriptor support
   - like: gcc 2>> out.log
-- 
+- multiple conflicting > redirects will resort to the last one, but creating all of the files
 
 Usage Notes:
 - no support for "[cmd] [num]< [file]", only "[cmd] < [file]"

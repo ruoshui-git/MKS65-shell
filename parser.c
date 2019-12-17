@@ -15,7 +15,13 @@ extern char str_buf[MAX_STR_CONST];
 
 extern char *strdup(const char *s);
 
+/** Whether there are multiple commands */
 int multiple_commands = 0;
+
+/** Whether in a pipe or not */
+int in_pipe = 0;
+
+struct Cmd * pipe_parent = NULL;
 
 struct Cmd *cmd = NULL;
 struct WordList *wl = NULL;
@@ -165,6 +171,40 @@ struct CmdOption readCmd()
             break;
 
         case PIPE:
+            // if already in a pipe, start new pipe
+            if (in_pipe)
+            {
+                if (cmd)
+                {
+                    pipe_parent = attach_pipe(pipe_parent, cmd);
+                }
+            }
+            else
+            {
+                in_pipe = 1;
+                if (cmd)
+                {
+                    pipe_parent = cmd;
+                    cmd = NULL;
+                }
+                else if (wl)
+                {
+                    pipe_parent = make_cmd(wl);
+                    cmd = NULL;
+                }
+                else
+                {
+                    pserror("needs a command for pipe");
+                    skip_to_end();
+                    return -1;
+                }
+            }
+            
+            if (!cmd && wl)
+            {
+                cmd = make_cmd(wl);
+            }
+            
             break;
 
         case SEMICOLON:
@@ -208,11 +248,6 @@ struct CmdOption readCmd()
         option.cmd = cmd = make_cmd(wl);
         wl = NULL;
     }
-    // else
-    // {
-
-    //     option.cmd = NULL;
-    // }
     return option;
 }
 

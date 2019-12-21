@@ -196,39 +196,42 @@ struct CmdOption readCmd()
                 {
                     pserror("needs a command for pipe");
                     skip_to_end();
-                    return -1;
+                    continue;
                 }
             }
-            
+
             if (!cmd && wl)
             {
                 cmd = make_cmd(wl);
             }
-            
+
             break;
 
         case SEMICOLON:
             multiple_commands = 1;
-            if (cmd)
-            {
-                wl = NULL;
-                option.cmd = cmd;
-                option.status = 1;
-                return option;
-            }
-            else if (wl)
-            {
-                option.cmd = cmd = make_cmd(wl);
-                wl = NULL;
-                option.status = 1;
-                return option;
-            }
-            else
+            if (!cmd && !wl)
             {
                 pserror("expects a command");
                 option.status = -1;
                 return option;
             }
+            if (cmd)
+            {
+                if (in_pipe)
+                {
+                    cmd = attach_pipe(option.cmd, cmd);
+                }
+            }
+            if (!cmd && wl)
+            {
+                cmd = make_cmd(wl);
+            }
+            wl = NULL;
+
+            option.status = 1;
+            return option;
+
+
             break;
         default:
             pserror("unrecognized token");
@@ -284,7 +287,7 @@ int get_rd_fileno(char *rd_text)
         // "[num]>"
         text[len - 1] = '\0';
     }
-    
+
 
     int fd = atoi(text);
     free(text);

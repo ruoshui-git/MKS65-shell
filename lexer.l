@@ -22,8 +22,7 @@ char * str_buf_ptr;
     "\""    {
         BEGIN(INITIAL);
         *str_buf_ptr = '\0';
-        fprintf(yyout, " \"%s\" ", str_buf);
-        /* return val to parser here!!!!! */
+        /* fprintf(yyout, " \"%s\" ", str_buf); */
         return QUOTED_WORD;
     }
 
@@ -64,16 +63,12 @@ char * str_buf_ptr;
     }
 }
 
-;   {
-        puts("");
-        return SEMICOLON;
-    }
-([0-9]+)?"<" { fprintf(yyout, " <redirect read> "); return RDRT_READ; }
-([0-9]+|&)?">" { fprintf(yyout, " <redirect ovewrite: %s> ", yytext); return RDRT_WRITE; }
-([0-9]+|&)?">>" { fprintf(yyout, " <redirect append: %s> ", yytext); return RDRT_APPEND; }
-"|" { fputs(" <pipe> ", yyout); return PIPE; }
-
-[^ \t\n\f\r\v;\"<>|]+ { printf(" \"%s\" ", yytext); return WORD; }
+;                        { /* puts("");                                            */    return SEMICOLON; }
+([0-9]+)?"<"             { /* fprintf(yyout, " <redirect read> ");                 */    return RDRT_READ; }
+([0-9]+|&)?">"           { /* fprintf(yyout, " <redirect ovewrite: %s> ", yytext); */    return RDRT_WRITE; }
+([0-9]+|&)?">>"          { /* fprintf(yyout, " <redirect append: %s> ", yytext);   */    return RDRT_APPEND; }
+"|"                      { /* fputs(" <pipe> ", yyout);                            */    return PIPE; }
+[^ \t\n\f\r\v;\"<>|]+    { /* printf(" \"%s\" ", yytext);                          */    return WORD; }
 
 [ \t] { }
 

@@ -80,3 +80,7 @@ Usage Notes:
   - i.e. you can only redirect in from stdin
 - no support for "... [num]>>&[num] ...", only "[num]>&[num]", like "2>&1"
   - i.e. redirecting out to a fd only works for ">", not ">>"
+
+Credits:
+- This solved one of my biggest problems:
+  - https://stackoverflow.com/questions/33884291/pipes-dup2-and-exec

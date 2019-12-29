@@ -1,6 +1,5 @@
-#line 2 "lexer.c"
 
-#line 4 "lexer.c"
+#line 3 "<stdout>"
 
 #define  YY_INT_ALIGNED short int
 
@@ -507,7 +506,7 @@ void yyerror(char * msg);
 
 char str_buf[MAX_STR_CONST];
 char * str_buf_ptr;
-#line 511 "lexer.c"
+#line 510 "<stdout>"
 
 #define INITIAL 0
 #define STR 1
@@ -730,7 +729,7 @@ YY_DECL
 
 
 
-#line 734 "lexer.c"
+#line 733 "<stdout>"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -800,15 +799,14 @@ YY_RULE_SETUP
 {
         BEGIN(INITIAL);
         *str_buf_ptr = '\0';
-        fprintf(yyout, " \"%s\" ", str_buf);
-        /* return val to parser here!!!!! */
+        /* fprintf(yyout, " \"%s\" ", str_buf); */
         return QUOTED_WORD;
     }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 30 "lexer.l"
+#line 29 "lexer.l"
 {
         *str_buf_ptr++ = '\n';
         fputs("> ", yyout);
@@ -816,7 +814,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 35 "lexer.l"
+#line 34 "lexer.l"
 {
         /* octal escape sequence */
         int result;
@@ -830,45 +828,45 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 46 "lexer.l"
+#line 45 "lexer.l"
 {
         yyerror("bad escape sequence");
     }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 50 "lexer.l"
+#line 49 "lexer.l"
 { *str_buf_ptr++ = '\n'; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 51 "lexer.l"
+#line 50 "lexer.l"
 { *str_buf_ptr++ = '\t'; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 52 "lexer.l"
+#line 51 "lexer.l"
 { *str_buf_ptr++ = '\r'; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 53 "lexer.l"
+#line 52 "lexer.l"
 { *str_buf_ptr++ = '\b'; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 54 "lexer.l"
+#line 53 "lexer.l"
 { *str_buf_ptr++ = '\f'; }
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 56 "lexer.l"
+#line 55 "lexer.l"
 { *str_buf_ptr++ = yytext[1]; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 58 "lexer.l"
+#line 57 "lexer.l"
 {
         char * yptr = yytext;
         while ( * yptr )
@@ -880,54 +878,51 @@ YY_RULE_SETUP
 
 case 13:
 YY_RULE_SETUP
-#line 67 "lexer.l"
-{
-        puts("");
-        return SEMICOLON;
-    }
+#line 66 "lexer.l"
+{ /* puts("");                                            */    return SEMICOLON; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 71 "lexer.l"
-{ fprintf(yyout, " <redirect read> "); return RDRT_READ; }
+#line 67 "lexer.l"
+{ /* fprintf(yyout, " <redirect read> ");                 */    return RDRT_READ; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 72 "lexer.l"
-{ fprintf(yyout, " <redirect ovewrite: %s> ", yytext); return RDRT_WRITE; }
+#line 68 "lexer.l"
+{ /* fprintf(yyout, " <redirect ovewrite: %s> ", yytext); */    return RDRT_WRITE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 73 "lexer.l"
-{ fprintf(yyout, " <redirect append: %s> ", yytext); return RDRT_APPEND; }
+#line 69 "lexer.l"
+{ /* fprintf(yyout, " <redirect append: %s> ", yytext);   */    return RDRT_APPEND; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 74 "lexer.l"
-{ fputs(" <pipe> ", yyout); return PIPE; }
+#line 70 "lexer.l"
+{ /* fputs(" <pipe> ", yyout);                            */    return PIPE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 76 "lexer.l"
-{ printf(" \"%s\" ", yytext); return WORD; }
+#line 71 "lexer.l"
+{ /* printf(" \"%s\" ", yytext);                          */    return WORD; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 78 "lexer.l"
+#line 73 "lexer.l"
 { }
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 80 "lexer.l"
+#line 75 "lexer.l"
 { yyterminate(); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 83 "lexer.l"
+#line 78 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 931 "lexer.c"
+#line 926 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STR):
 	yyterminate();
@@ -1929,7 +1924,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 83 "lexer.l"
+#line 78 "lexer.l"
 
 
 

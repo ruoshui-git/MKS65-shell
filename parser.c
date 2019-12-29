@@ -21,9 +21,11 @@ int multiple_commands = 0;
 /** Whether in a pipe or not */
 int in_pipe = 0;
 
-struct Cmd * pipe_parent = NULL;
+struct Cmd *pipe_parent = NULL;
 
+/** Keep track of current cmd */
 struct Cmd *cmd = NULL;
+/** Keep track of the current WordList */
 struct WordList *wl = NULL;
 struct WordElem *we = NULL;
 
@@ -65,6 +67,7 @@ struct CmdOption readCmd()
 
         switch (token)
         {
+
         case WORD:
             we = make_word(yytext);
             wl = wl_append(wl, we);
@@ -171,26 +174,30 @@ struct CmdOption readCmd()
             break;
 
         case PIPE:
-            // if already in a pipe, start new pipe
+
             if (in_pipe)
             {
-                if (cmd)
+                // if already in a pipe, start new pipe
+                if (wl && !cmd)
                 {
-                    pipe_parent = attach_pipe(pipe_parent, cmd);
+                    cmd = make_cmd(wl);
+                    wl = NULL;
                 }
+                pipe_parent = attach_pipe(pipe_parent, cmd);
+                cmd = NULL;
             }
             else
             {
+                // no pipe created yet, make a new one
+                // reading command is a cross-loop operation, needs tracking
                 in_pipe = 1;
                 if (cmd)
                 {
                     pipe_parent = cmd;
-                    cmd = NULL;
                 }
                 else if (wl)
                 {
                     pipe_parent = make_cmd(wl);
-                    cmd = NULL;
                 }
                 else
                 {
@@ -198,11 +205,9 @@ struct CmdOption readCmd()
                     skip_to_end();
                     continue;
                 }
-            }
-
-            if (!cmd && wl)
-            {
-                cmd = make_cmd(wl);
+                // clear var for next command
+                cmd = NULL;
+                wl = NULL;
             }
 
             break;
@@ -231,7 +236,6 @@ struct CmdOption readCmd()
             option.status = 1;
             return option;
 
-
             break;
         default:
             pserror("unrecognized token");
@@ -251,6 +255,11 @@ struct CmdOption readCmd()
         option.cmd = cmd = make_cmd(wl);
         wl = NULL;
     }
+    if (in_pipe)
+    {
+        pipe_parent = attach_pipe(pipe_parent, cmd);
+        option.cmd = pipe_parent;
+    }
     return option;
 }
 
@@ -264,12 +273,19 @@ void skip_to_end(void)
 
 void restart_lexer(FILE *infile)
 {
-    if (cmd)
+    if (in_pipe)
+    {
+        free_cmd(pipe_parent);
+    }
+    else if (cmd)
     {
         free_cmd(cmd);
     }
     cmd = NULL;
+    pipe_parent = NULL;
+
     multiple_commands = 0;
+    in_pipe = 0;
     yyrestart(infile);
 }
 
@@ -287,7 +303,6 @@ int get_rd_fileno(char *rd_text)
         // "[num]>"
         text[len - 1] = '\0';
     }
-
 
     int fd = atoi(text);
     free(text);

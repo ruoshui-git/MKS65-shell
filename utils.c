@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 #include "utils.h"
 #include "colors.h"
 
@@ -54,4 +55,43 @@ void pserror(char * msg)
 void iserror(char * msg)
 {
     fprintf(stderr, "Internal shell error: %s\n", msg);
+}
+
+
+struct PidList * lappend (struct PidList * l, int data)
+{
+    
+    struct PidNode * node = malloc(sizeof(struct PidNode));
+    node->data = data;
+    node->next = NULL;
+    if (!l)
+    {
+        l = malloc(sizeof(struct PidList));
+        l->head = node;
+        l->end = node;
+        l->len = 1;
+    }
+    else
+    {
+        l->end->next = node;
+        l->end = node;
+        l->len++;
+    }
+    return l;
+}
+
+int ldequeue (struct PidList * list)
+{
+    if (!list || list->len < 1)
+    {
+        return -1;
+    }
+
+    struct PidNode * head = list->head;
+    int data = head->data;
+    list->head = head->next;
+
+    free(head);
+    list->len--;
+    return data;
 }

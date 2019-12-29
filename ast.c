@@ -160,6 +160,10 @@ struct Redirect * free_redirects(struct Redirect * rd)
 
 struct Cmd * attach_pipe(struct Cmd * cmd, struct Cmd * pipeto)
 {
+    if (!cmd)
+    {
+        return NULL;
+    }
     if (!cmd->pipeto)
     {
         cmd->pipeto = pipeto;

@@ -5,6 +5,8 @@
         "ast.h": "c",
         "ast.structs.h": "c",
         "utils.h": "c",
-        "lexer.h": "c"
+        "lexer.h": "c",
+        "types.h": "c",
+        "unistd.h": "c"
     }
 }

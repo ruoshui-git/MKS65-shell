@@ -1,5 +1,0 @@
-extern yy_size_t yyleng;
-extern int yylineno;
-int yylex_destroy (void );
-extern int yylex (void);
-#define YY_DECL int yylex (void)

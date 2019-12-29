@@ -915,17 +915,19 @@ case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
 #line 75 "lexer.l"
-{ yyterminate(); }
+{                                                               return EOL; }
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(STR):
+#line 76 "lexer.l"
+{ /* fputs(yyout, "EOF, exiting\n") */                          return END; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 78 "lexer.l"
+#line 79 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 926 "<stdout>"
-case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(STR):
-	yyterminate();
+#line 931 "<stdout>"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1924,7 +1926,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "lexer.l"
+#line 79 "lexer.l"
 
 
 

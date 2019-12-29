@@ -3,7 +3,7 @@
 
 /**
  * Return option for parser
- * @member status: 0 = EOL, 1 = To Continue, -1 = Error
+ * @member status: 0 = EOL, 1 = To Continue, -1 = Error, -2 = EOF
  */
 struct CmdOption
 {
@@ -21,7 +21,8 @@ enum TOKENS
     RDRT_APPEND = 264,
     PIPE = 265,
     SEMICOLON = 266,
-    END = 0
+    EOL = 267,
+    END = 268
 };
 
 /** Flex in a shell command and then parse it */

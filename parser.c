@@ -217,6 +217,27 @@ struct CmdOption readCmd()
             return option;
 
             break;
+        case END:
+            option.status = -2;
+            return option;
+            break;
+
+        case EOL:
+            // reached end of line, terminate
+
+            // Either this is a new shell command, or there are multiple commands. Then run the current one.
+            // Otherwise there is no command, then return NULL, which is the default
+            if ((!cmd && wl) || multiple_commands)
+            {
+                option.cmd = cmd = make_cmd(wl);
+                wl = NULL;
+            }
+            if (in_pipe)
+            {
+                pipe_parent = attach_pipe(pipe_parent, cmd);
+                option.cmd = pipe_parent;
+            }
+            return option;
         default:
             pserror("unrecognized token");
             // don't stop, continue parsing!
@@ -224,21 +245,7 @@ struct CmdOption readCmd()
         }
     }
 
-    // yylex() returned 0, reached end of line, terminate
 
-    // Either this is a new shell command, or there are multiple commands. Then run the current one.
-    // Otherwise there is no command, then return NULL, which is the default
-    if ((!cmd && wl) || multiple_commands)
-    {
-        option.cmd = cmd = make_cmd(wl);
-        wl = NULL;
-    }
-    if (in_pipe)
-    {
-        pipe_parent = attach_pipe(pipe_parent, cmd);
-        option.cmd = pipe_parent;
-    }
-    return option;
 }
 
 void skip_to_end(void)

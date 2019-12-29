@@ -56,7 +56,7 @@ void shell()
                 continue;
             }
         }
-        else if (option.status == EOF)
+        else if (option.status == -2)
         {
             shell_exit();
         }

@@ -72,7 +72,8 @@ char * str_buf_ptr;
 
 [ \t] { }
 
-\n { yyterminate(); }
+\n                       {                                                               return EOL; }
+<<EOF>>                  { /* fputs(yyout, "EOF, exiting\n") */                          return END; }
 
 
 %%

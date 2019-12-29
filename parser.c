@@ -123,6 +123,7 @@ struct CmdOption readCmd()
                 cmd = cmd_append_redirect(cmd, 1, 1, file);
                 cmd = cmd_append_redirect(cmd, 1, 2, strdup("&1"));
 
+                option.cmd = cmd;
                 free(rd_text);
                 break;
             }

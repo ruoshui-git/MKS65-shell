@@ -26,3 +26,5 @@ gcc &>> out.txt
 
 echo "hellO" 2> out.txt 1>&2
 
+# pipes
+

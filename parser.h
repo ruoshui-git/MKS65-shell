@@ -11,6 +11,7 @@ struct CmdOption
     struct Cmd *cmd;
 };
 
+/** Tokens used in lexer and parser */
 enum TOKENS
 {
     WORD = 260,

@@ -1,15 +1,11 @@
 /**
- * Count the occurence of a char in a string
- */
-int countchar(char * src, char c);
-
-/**
  * Print shell prompt
  */
 void prompt();
 
 /**
  * Clean up resources before exiting
+ * Particularly useful in sighandler
  */
 void cleanup();
 
@@ -28,17 +24,21 @@ void pserror(char * msg);
 /** Print internal shell error */
 void iserror(char * msg);
 
-
-
-
+// Linked List
 #ifndef LINKED_LIST
 #define LINKED_LIST
+/** 
+ * A single node for pid linked list
+*/
 struct PidNode
 {
     int data;
     struct PidNode *next;
 };
 
+/** 
+ * A pid linked list
+*/
 struct PidList
 {
     struct PidNode *head;

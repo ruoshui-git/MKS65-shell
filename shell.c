@@ -1,12 +1,9 @@
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <unistd.h>
 #include <sys/types.h>
-
-#include <fcntl.h>
 
 #include "processes.h"
 #include "parser.h"
@@ -27,14 +24,8 @@ char **argv;
 /** Keep track of current line of input */
 char *ln;
 
-int shell()
+void shell()
 {
-    // ln = malloc(MAX_LN_LEN * sizeof(char));
-
-    // if (!ln)
-    // {
-    //     perror("shell");
-    // }
 
     struct CmdOption option;
 
@@ -54,17 +45,6 @@ int shell()
 
         // Get command from parser
         option = readCmd();
-
-        // if (strlen(ln) == 1)
-        // {
-        //     // nothing is put in, skip
-        //     continue;
-        // }
-
-        // // get rid of newline
-        // ln[strlen(ln) - 1] = 0;
-
-        // argv = parse_args(ln);
 
         // deal with parser output
         if (option.status == 0)
@@ -121,7 +101,7 @@ int shell()
             {
                 perror("fork failure");
                 cleanup();
-                return EXIT_FAILURE;
+                exit(EXIT_FAILURE);
             }
             else if (child_pid)
             {

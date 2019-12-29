@@ -43,5 +43,6 @@ int main(void)
     // default mode, read from stdin
     yyin = stdin;
 
-    return shell();
+    shell();
+    return 1;
 }

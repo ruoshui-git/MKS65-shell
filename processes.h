@@ -1,6 +1,6 @@
 #include "ast.h"
 
-/** Named Cconstants for pipe access */
+/** Named constants for pipe access */
 #define PIPE_READ 0
 #define PIPE_WRITE 1
 

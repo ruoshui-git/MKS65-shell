@@ -5,7 +5,7 @@
 #include "cmds.h"
 #include "utils.h"
 
-void cd(const char * path)
+void cd(const char *path)
 {
     int stat;
     if (path)
@@ -17,7 +17,7 @@ void cd(const char * path)
         puts("cd .");
         stat = chdir(".");
     }
-    
+
     if (stat != 0)
     {
         perror("cd");
@@ -27,8 +27,7 @@ void cd(const char * path)
 
 void shell_exit(void)
 {
-    
-    puts("exit");
+
     cleanup();
     exit(EXIT_SUCCESS);
 }

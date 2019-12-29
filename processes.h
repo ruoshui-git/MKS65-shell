@@ -29,3 +29,10 @@ void exec_cmd(struct Cmd * cmd);
  * @arg cpid child's pid
 */
 void wait_for(pid_t cpid);
+
+/** 
+ * Handle pipes for a cmd
+ * Fork children to execute commands and all of the piping
+ * @arg cmd cmd to handle pipes for
+*/
+void handle_pipes(struct Cmd *cmd);

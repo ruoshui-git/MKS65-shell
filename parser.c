@@ -109,7 +109,7 @@ struct CmdOption readCmd()
                 if (token == RDRT_APPEND)
                 {
                     serror("shell does not support [num]>>&[num]");
-                    skip_to_end();
+                    // skip_to_end();
                     continue;
                 }
 

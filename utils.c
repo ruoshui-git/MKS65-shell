@@ -44,7 +44,7 @@ void prompt()
 
 void serror(char * msg)
 {
-    fprintf(stderr, "Shell error: %s\n", msg);
+    fprintf(stderr, "Warning: %s\n", msg);
 }
 
 void pserror(char * msg)

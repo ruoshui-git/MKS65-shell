@@ -86,7 +86,7 @@ int handle_redirects(struct Redirect *rd)
 
 void exec_cmd(struct Cmd *cmd)
 {
-    fprintf(stderr, "exec_cmd: %s\n", cmd->cmd->head->word);
+    // fprintf(stderr, "exec_cmd: %s\n", cmd->cmd->head->word);
     if (cmd->redirects)
     {
         int rd_result = handle_redirects(cmd->redirects);

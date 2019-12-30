@@ -1,3 +1,27 @@
+// Linked List
+#ifndef LINKED_LIST
+#define LINKED_LIST
+/** 
+ * A single node for pid linked list
+*/
+struct PidNode
+{
+    int data;
+    struct PidNode *next;
+};
+
+/** 
+ * A pid linked list
+*/
+struct PidList
+{
+    struct PidNode *head;
+    struct PidNode *end;
+    int len;
+};
+
+#endif
+
 /**
  * Print shell prompt
  */
@@ -23,30 +47,6 @@ void pserror(char * msg);
 
 /** Print internal shell error */
 void iserror(char * msg);
-
-// Linked List
-#ifndef LINKED_LIST
-#define LINKED_LIST
-/** 
- * A single node for pid linked list
-*/
-struct PidNode
-{
-    int data;
-    struct PidNode *next;
-};
-
-/** 
- * A pid linked list
-*/
-struct PidList
-{
-    struct PidNode *head;
-    struct PidNode *end;
-    int len;
-};
-
-#endif
 
 /** 
  * Append a new node to a linked list

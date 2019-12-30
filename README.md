@@ -15,13 +15,15 @@ additional features (sorry for the delay):
   - ignore  arbitrary     spaces
     - so: 'ls>out'=='ls > out'=='ls >out'=='ls> out'=='ls >    out'
   - no limit on number of commands nor the length of a single line
+  - continuation of unterminated quotations
+    - if a quote is unfinished on one line, parser will start a new line with ">" and ask for more inputs until another quotation mark is given
 - redirect > and >> with file descriptor support
   - like: gcc 2>> out.log
   - multiple conflicting > redirects will resort to the last one, but creating all of the files
 - handles redirects like 
   - "1> out.txt 2>&1"
   - "&> out.txt" (gets converted to "1> out.txt 2>&1")
-- chaining multiple pipeswant to deal with multi-processing problems right now
+- chaining multiple pipes
 - ^C is captured and does nothing
 - ^D is mapped to exit
 - when running program, an optional second argument can be the file with commands to execute
@@ -34,6 +36,7 @@ additional features (sorry for the delay):
 
 ## BUGS:
 - sometimes there will be a "broken pipe" when chaining too many pipes, probably due to the timing of the threads
+- ^D in a program like cat will also cause shell to exit
 
 ## No support:
 - no support for "[cmd] [num]< [file]", only "[cmd] < [file]"

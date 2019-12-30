@@ -214,6 +214,11 @@ struct CmdOption readCmd()
             }
             wl = NULL;
 
+            option.cmd = cmd;
+            
+            // this is to not interfere with later commands
+            cmd = NULL;
+
             option.status = 1;
             return option;
 
@@ -257,7 +262,7 @@ void skip_to_end(void)
     }
 }
 
-void restart_lexer(FILE *infile)
+void restart_lexer()
 {
     if (in_pipe)
     {
@@ -272,7 +277,9 @@ void restart_lexer(FILE *infile)
 
     multiple_commands = 0;
     in_pipe = 0;
-    yyrestart(infile);
+
+    // this line caused errors! do not restart scanner! simply continue so infile ptr is not disturbed!
+    // yyrestart(infile);
 }
 
 int get_rd_fileno(char *rd_text)

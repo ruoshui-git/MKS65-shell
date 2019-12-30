@@ -96,38 +96,7 @@ void exec_cmd(struct Cmd *cmd)
             serror("redirection error");
         }
     }
-
-    // if (cmd->pipeto)
-    // {
-    //     int pipedes[2];
-    //     if (pipe(pipedes) == -1)
-    //     {
-    //         perror("pipe");
-    //     }
-    //     if (dup2(pipedes[PIPE_WRITE], STDOUT_FILENO) == -1)
-    //     {
-    //         perror("dup2");
-    //     }
-    //     int parent = fork();
-    //     if (parent == -1)
-    //     {
-    //         perror("fork");
-    //     }
-    //     else if (parent)
-    //     {
-    //         // do nothing and move on
-    //     }
-    //     else
-    //     {
-    //         if (dup2(pipedes[PIPE_READ], STDIN_FILENO) == -1)
-    //         {
-    //             perror("dup2 in child process");
-    //         }
-    //         // execute the command to be piped to
-    //         exec_cmd(cmd->pipeto);
-    //     }
-    // }
-
+    
     char **argv = cmd_to_argv(cmd);
 
     int res = execvp(argv[0], argv);

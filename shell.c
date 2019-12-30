@@ -24,22 +24,25 @@ char **argv;
 /** Keep track of current line of input */
 char *ln;
 
-void shell()
+void shell(FILE * infile)
 {
+    int is_stdin_terminal = isatty(STDIN_FILENO);
+    int is_infile_stdin = infile == stdin;
+
+    yyin = infile;
 
     struct CmdOption option;
 
     while (1)
     {
-        if (should_prompt)
+        if (is_infile_stdin && is_stdin_terminal && should_prompt)
         {
             prompt();
         }
-        // fgets(ln, MAX_LN_LEN, stdin);
 
         if (should_restart_lexer)
         {
-            restart_lexer(stdin);
+            restart_lexer();
             should_restart_lexer = 0;
         }
 
@@ -62,7 +65,6 @@ void shell()
         }
         else if (option.status == 1)
         {
-
             should_prompt = 0;
         }
         else if (option.status == -1)

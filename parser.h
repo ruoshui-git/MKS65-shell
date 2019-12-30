@@ -34,8 +34,8 @@ void skip_to_end(void);
 /** Old: parse arguments, return argv */
 char **parse_args(char *line);
 
-/** Restart lexer on a file pointer */
-void restart_lexer(FILE *infile);
+/** Restart lexer on the same file */
+void restart_lexer();
 
 /** 
  * Get the fileno from a redirect operator

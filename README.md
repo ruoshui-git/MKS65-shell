@@ -24,6 +24,10 @@ additional features (sorry for the delay):
 - chaining multiple pipeswant to deal with multi-processing problems right now
 - ^C is captured and does nothing
 - ^D is mapped to exit
+- when running program, an optional second argument can be the file with commands to execute
+  - ex: ./main test_cmds.txt
+  - originally this was trying to ease the pain for Mr. DW because an error in the code caused program to unable to have commands redirected into it, so he would have to enter commands to manually test it; attempt to implement this feature fixed that bug
+- no prompting when stdin is not a terminal session (file or redirection, either one)
 
 ## Attempted:
 - Thought about using Readline library for some fancy features but ended up not having enough time to work on it
@@ -214,6 +218,32 @@ main.c: register signal handlers and run shell
 parser.c: use results from lexer and convert user input into syntax structure that the program can understand
 
         ```C
+        #include <stdio.h>
+        #include "ast.h"
+
+        /**
+         * Return option for parser
+         * @member status: 0 = EOL, 1 = To Continue, -1 = Error, -2 = EOF
+         */
+        struct CmdOption
+        {
+            int status;
+            struct Cmd *cmd;
+        };
+
+        /** Tokens used in lexer and parser */
+        enum TOKENS
+        {
+            WORD = 260,
+            QUOTED_WORD = 261,
+            RDRT_READ = 262,
+            RDRT_WRITE = 263,
+            RDRT_APPEND = 264,
+            PIPE = 265,
+            SEMICOLON = 266,
+            EOL = 267,
+            END = 268
+        };
 
         /** Flex in a shell command and then parse it */
         struct CmdOption readCmd();
@@ -224,8 +254,8 @@ parser.c: use results from lexer and convert user input into syntax structure th
         /** Old: parse arguments, return argv */
         char **parse_args(char *line);
 
-        /** Restart lexer on a file pointer */
-        void restart_lexer(FILE *infile);
+        /** Restart lexer on the same file */
+        void restart_lexer();
 
         /** 
          * Get the fileno from a redirect operator
@@ -287,8 +317,9 @@ shell.c: patch together the functions of a shell
         /** 
          * The main shell program: prompt, parse, execute, repeat
          * Does not handle signals
+         * @arg infile file to read commands from
         */
-        void shell();
+        void shell(FILE * infile);
         ```
 
 utils.c/h: contains some helper functions and structs, including a simple queue implementation

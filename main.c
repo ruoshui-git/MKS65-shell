@@ -8,9 +8,6 @@
 #include "utils.h"
 #include "parser.h"
 
-/** Input stream */
-extern FILE *yyin;
-
 /** max command length */
 const int MAX_LN_LEN = 1000;
 
@@ -35,14 +32,39 @@ static void sighandler(int signum)
     }
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
     signal(SIGINT, sighandler);
     signal(SIGSEGV, sighandler);
-    
-    // default mode, read from stdin
-    yyin = stdin;
 
-    shell();
+    // input stream
+    FILE * infile = NULL;
+
+    if (argc == 1)
+    {
+        // default, no argument
+        infile = stdin;
+    }
+    else if (argc == 2)
+    {
+        // second arg is input stream
+        infile = fopen(argv[1], "r");
+        if (!infile)
+        {
+            perror("fopen");
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        puts("usage:\n\t./main [file]");
+        return EXIT_FAILURE;
+    }
+    
+    if (infile)
+    {
+        shell(infile);
+    }
+
     return 1;
 }
